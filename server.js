@@ -26,6 +26,7 @@ app.set('view engine', 'ejs');
 // client.connect();
 // client.on('error', err => console.error(err));
 
+
 // Routes
 app.get('/home', home);
 app.get('/creation', createMap);
