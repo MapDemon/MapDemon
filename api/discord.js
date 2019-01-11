@@ -9,7 +9,8 @@ const router = express.Router();
 const PORT = process.env.PORT || 3000;
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const redirect = encodeURIComponent('http://localhost:3000/api/discord/callback');
+const redirect = encodeURIComponent(`http://localhost:${PORT
+}/api/discord/callback`);
 
 // app.use(express.static('./')); (disabled due to no app = express call)
 
