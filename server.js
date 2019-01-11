@@ -10,6 +10,10 @@ const PORT = process.env.PORT || 3000;
 // Load environment variables from .env file
 require('dotenv').config();
 
+// .env variables
+const CLIENT_ID = process.env.CLIENT_ID;
+const CLIENT_SECRET = process.env.CLIENT_SECRET;
+
 // Application Setup
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('./public'));
@@ -24,7 +28,7 @@ app.set('view engine', 'ejs');
 
 // Routes
 app.get('/home', home);
-
+app.use('/api/discord', require('./api/discord'));
 
 // Route Functions
 
