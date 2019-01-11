@@ -5,13 +5,20 @@
     <%- include('../partials/header') %>
     <main>
         <div class="chat-widget"></div>
-        <div id="login-section">
-            <button>Login with Discord</button>
-            <h3></h3>
-        </div>
-        <div id="info-section">
-            <h3>Welcome Weary Traveler</h3>
-            <p>insert geneal 'about the site' info here</p>
+        <div class="map-section">
+            <div class="save-state-form">
+                <form action="x" method="x">
+                    <label for="map-name">Map Name</label>
+                    <input id="map-name" type="text" value="map-name">
+
+                    <input id="save-map-button" type="submit" value="Save Map">
+                </form>
+            </div>
+            <div class="table">
+                <div class="coordinates">
+                    <div class="map-grid"></div>
+                </div>
+            </div>
         </div>
     </main>
     <%- include('../partials/footer') %>
