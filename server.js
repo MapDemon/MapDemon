@@ -17,6 +17,7 @@ const CLIENT_SECRET = process.env.CLIENT_SECRET;
 // Application Setup
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('./public'));
+app.use('/api/discord', require('./api/discord'));
 
 app.set('view engine', 'ejs');
 
@@ -33,7 +34,9 @@ app.get('/creation', createMap);
 app.get('/viewmap', viewMap);
 app.get('/about', aboutPage)
 
-app.use('/api/discord', require('./api/discord'));
+app.post('/viewmap/:id', saveMap);
+app.put('/viewmap', updateMap);
+app.delete('/savedMap/:id', deleteMap);
 
 // Route Functions
 
@@ -46,12 +49,30 @@ function createMap(request, response) {
 }
 
 function viewMap(request, response) {
-  response.render('pages/viewmap')
+  response.render('pages/viewmap');
+}
+
+function saveMap(req, res) {
+}
+
+function updateMap(request, response) {
+  response.render('pages/viewmap');
+  // add code to update map here
+}
+
+function deleteMap (req, res) {
+
 }
 
 function aboutPage(request, response) {
-  response.render('pages/about')
+  response.render('pages/about');
 }
+
+// Constructors
+function Map(map) {
+  // parameters go here - one likely that ties userID to this map
+}
+
 
 // Server Listener
 app.listen( PORT, () => console.log(`LISTENING ON PORT:${PORT}`));
