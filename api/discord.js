@@ -19,7 +19,7 @@ const redirect = encodeURIComponent(`http://localhost:${PORT
 
 
 router.get('/login', (req, res) => {
-  res.redirect(`https://discordapp.com/oauth2/authorize?client_id=${CLIENT_ID}&scope=identify%20email%20connections%20guilds%20guilds.join%20gdm.join%20bot%20messages.read&type=code&response)type=code&redirect_uri=${redirect}`);
+  res.redirect(`https://discordapp.com/oauth2/authorize?client_id=${CLIENT_ID}&scope=identify%20email%20connections%20guilds%20guilds.join%20gdm.join%20bot%20messages.read&type=code&response_type=code&redirect_uri=${redirect}`);
 });
 
 router.get('/callback', catchAsync(async (req, res) => {

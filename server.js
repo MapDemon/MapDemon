@@ -31,7 +31,7 @@ app.set('view engine', 'ejs');
 
 
 // Routes
-app.get('/home', home);
+app.get('/', home);
 app.get('/creation', createMap);
 app.get('/viewmap', viewMap);
 app.get('/about', aboutPage)

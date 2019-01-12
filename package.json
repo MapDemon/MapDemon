@@ -4,10 +4,12 @@
   "description": "A map generator for tabletop role playing game",
   "main": "server.js",
   "dependencies": {
+    "btoa": "^1.2.1",
     "cors": "^2.8.5",
     "dotenv": "^6.2.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "node-fetch": "^2.3.0",
     "nodemon": "^1.18.9",
     "pg": "^7.7.1",
     "superagent": "^4.1.0"
