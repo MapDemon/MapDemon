@@ -13,8 +13,15 @@ h3 {
   letter-spacing: 2px;
 }
 
-figcaption {
+figcaption h4{
+  font-size: 1.8em;
+  padding-left: 15px;
+  padding-top: 5px;
+}
+
+figcaption p {
   font-size: 1.5em;
+  padding-left: 15px;
 }
 
 /* ==HEADER & NAVIGATION== */
@@ -106,7 +113,11 @@ main {
   justify-content: row;
 }
 
-#creators-section 
+#creators-section figure img {
+  width: 100px;
+  height: 100px;
+  border: 1px solid black;
+}
 
 /* ==FOOTER== */
 footer {
