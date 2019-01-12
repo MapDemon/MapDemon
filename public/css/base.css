@@ -1,0 +1,118 @@
+/* ==FONTS== */
+h1 {
+  font-size: 3.75em;
+  letter-spacing: 3px;
+}
+
+h2 {
+  font-size: 2.5em;
+}
+
+h3 {
+  font-size: 2em;
+  letter-spacing: 2px;
+}
+
+figcaption {
+  font-size: 1.5em;
+}
+
+/* ==HEADER & NAVIGATION== */
+header {
+  background-color: grey;
+  height: 15vh;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#header-titles {
+  display: flex;
+  flex-flow: row;
+  align-items: center;
+}
+
+#header-title {
+  text-align: center;
+}
+#header-subtitle {
+  text-align: left;
+}
+
+header button {
+  margin-right: 2vw;
+}
+
+/* ==MAIN SECTION & COMPONENTS== */
+main {
+  height: 80vh;
+  padding: 0 2vw;
+  display: flex;
+}
+/* Home/Login/Index Page */
+#login-section {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#login-section a {
+  background: #7289DA;
+  padding: 0 20px;
+  line-height: 35px;
+  color: #fff;
+  font-family: 'Helvetica', 'Arial', sans-sefir;
+  font-size: 20px;
+  display: block;
+  text-decoration: none;
+  border-radius: 3px;
+  width: 165px;
+  margin-top: 15%;
+}
+
+#info-section {
+  width: 50%;
+  display: flex;
+  justify-content: flex-start;
+  flex-direction: column;
+}
+
+#info-section h3 {
+  margin-top: 15%;
+}
+
+/* About Page */
+#about-intro-section {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+#about-intro-section h2 {
+  margin-top: 15%;
+}
+
+#creators-section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+#creators-section figure {
+  display: flex;
+  justify-content: row;
+}
+
+#creators-section 
+
+/* ==FOOTER== */
+footer {
+  height: 5vh;
+  background-color: grey;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

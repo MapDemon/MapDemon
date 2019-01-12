@@ -1,12 +1,22 @@
 <header>
-    <nav>
-        <ul>
-            <li><a href="#">Home</a></li>
-            <li><a href="#">Create Map</a></li>
-            <li><a href="#">Choose Adventure</a></li>
-        </ul>
+    <nav role="navigation">
+        <div id="menuToggle">
+            <input type="checkbox"/>
+            <span></span>
+            <span></span>
+            <span></span>
+            <ul id="menu">
+                <a class= "menu-options" href="/home"><li class= "menu-options">Home</li></a>
+                <a class= "menu-options" href="/about"><li class= "menu-options">About</li></a>
+                <a class= "menu-options" href="/creation"><li class= "menu-options">Create Map</li></a>
+                <a class= "menu-options" href="/viewmap"><li class="menu-options">View Map</li></a>
+            </ul>
+        </div>
     </nav>
-    <h1>MapDemon</h1>
-    <h2>insert something catchy here</h2>
-    <button>Log Out</button>
+    <div id="header-titles">
+        <h1 id="header-title">MapDemon</h1>
+        <h1>  |  </h1>
+        <h2 id="header-subtitle">create your adventure</h2>
+    </div>
+    <button>Log Out?</button>
 </header>
