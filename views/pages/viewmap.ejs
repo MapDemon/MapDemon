@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head') %>
+<body>
+    <%- include('../partials/header') %>
+    <main>
+        <div class="chat-widget"></div>
+        <div class="map-section">
+            <div class="save-state-form">
+                <form action="x" method="x">
+                    <label for="map-name">Map Name</label>
+                    <input id="map-name" type="text" value="map-name">
+
+                    <input id="save-map-button" type="submit" value="Save Map">
+                </form>
+            </div>
+            <div class="table">
+                <div class="coordinates">
+                    <div class="map-grid"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <%- include('../partials/footer') %>
+</body>
+</html>

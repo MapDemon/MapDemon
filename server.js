@@ -26,14 +26,31 @@ app.set('view engine', 'ejs');
 // client.connect();
 // client.on('error', err => console.error(err));
 
+
 // Routes
 app.get('/home', home);
+app.get('/creation', createMap);
+app.get('/viewmap', viewMap);
+app.get('/about', aboutPage)
+
 app.use('/api/discord', require('./api/discord'));
 
 // Route Functions
 
 function home(request, response) {
   response.render('pages/index');
+}
+
+function createMap(request, response) {
+  response.render('pages/creation');
+}
+
+function viewMap(request, response) {
+  response.render('pages/viewmap')
+}
+
+function aboutPage(request, response) {
+  response.render('pages/about')
 }
 
 // Server Listener

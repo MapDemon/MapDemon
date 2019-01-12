@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head') %>
+<body>
+    <%- include('../partials/header') %>
+    <main>
+        <div class="chat-widget"></div>
+        <div class="map-section">
+            <div class="generate-save-form">
+                <form action="x" method="x">
+                    <input id="map-name" type="text" value="Map Name">
+                    <input id="save-map-button" type="submit" value="Save Map">
+                </form>
+            </div>
+            <div class="table">
+                <div class="coordinates">
+                    <div class="map-grid"></div>
+                </div>
+            </div>
+        </div>
+        <div class="world-options-section">
+            <form action="x">
+                <fieldset class="biome-selection">
+                    <p>Select Biomes
+                    <br />
+                        <input id="water" type="checkbox" name="water" value="water"> Water
+                        <input id="plains" type="checkbox" name="plains" value="plains"> Plains
+                        <input id="mountains" type="checkbox" name="mountains" value="mountains"> Mountains
+                        <input id="forest" type="checkbox" name="forest" value="forest"> Forest
+                    </p>
+                </fieldset>
+                <fieldset class="icons-selection">
+                    <p>Select Biomes
+                    <br />
+                        <input id="water" type="checkbox" name="water" value="water"> Water
+                        <input id="plains" type="checkbox" name="plains" value="plains"> Plains
+                        <input id="mountains" type="checkbox" name="mountains" value="mountains"> Mountains
+                        <input id="forest" type="checkbox" name="forest" value="forest"> Forest
+                    </p>
+                </fieldset>
+                <button>Generate Map</button>
+            </form>
+        </div>
+    </main>
+    <%- include('../partials/footer') %>
+</body>
+</html>
