@@ -1,0 +1,35 @@
+table {
+    border-collapse:separate;
+    border-spacing: 0px;
+    margin: auto;
+    height: 400px;
+    width: 400px;
+    margin-bottom: 50px;
+}
+body{
+    background-color: black;
+}
+td{
+    height: 2px;
+    width: 2px;
+}
+
+.blank{
+    background-color: white;
+}
+
+.water{
+    background-color: blue;
+}
+
+.mountain{
+    background-color: grey;
+}
+
+.forest{
+    background-color: green;
+}
+
+.plains{
+    background-color: yellow;
+}
