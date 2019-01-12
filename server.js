@@ -5,6 +5,8 @@ const express = require('express');
 const superagent = require('superagent');
 const app = express();
 const pg = require('pg');
+const { catchAsync } = require('./utils');
+
 const PORT = process.env.PORT || 3000;
 
 // Load environment variables from .env file
@@ -55,3 +57,19 @@ function aboutPage(request, response) {
 
 // Server Listener
 app.listen( PORT, () => console.log(`LISTENING ON PORT:${PORT}`));
+
+// Error Handlers
+app.use((err, req, res, next) => {
+  switch (err.message) {
+  case 'NoCodeProvided':
+    return res.status(400).send({
+      status: 'ERROR',
+      error: err.message,
+    });
+  default:
+    return res.status(500).send({
+      status: 'ERROR',
+      error: err.message,
+    });
+  }
+});
