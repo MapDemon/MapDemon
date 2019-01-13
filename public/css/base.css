@@ -13,6 +13,10 @@ h3 {
   letter-spacing: 2px;
 }
 
+h4 {
+  font-size: 1.7em;
+}
+
 figcaption h4{
   font-size: 1.8em;
   padding-left: 15px;
@@ -121,8 +125,6 @@ main {
 }
 /* View Map Page */
 #map-section {
-  box-sizing: border-box;
-  border: 1px solid black;
   width: 60%;
 }
 
@@ -147,58 +149,48 @@ main {
 #map-table {
   width: 100%;
   height: 92.89%;
-}
-
-#unrolled-map {
-  width: 500px;
-  height: 500px;
-  margin: auto;
   box-sizing: border-box;
-  border: 1px solid black;
-}
-
-#alpha-coordinates {
-  width: 100%;
-  height: 4%;
-  display: flex;
-  flex-direction: row;
-}
-
-#alpha-coordinates li {
-  width: 18.518%;
-  text-align: center;
-  box-sizing: border-box;
-  border: 1px solid black;
-}
-
-#numeric-coordinates {
-  width: 3.7037%;
-  height: 81.482%;
-  display: flex;
-  flex-direction: column;
-}
-
-#numeric-coordinates li{
-  height: 4.54%;
-  padding: 10%;
-  text-align: center;
-  box-sizing: border-box;
-  border: 1px solid black;
 }
 
 #world-options-section {
   box-sizing: border-box;
-  border: 1px solid black;
   width: 15%;
+  margin-top: 5%;
 }
+
+#biome-selection {
+  margin-top: 20%;
+}
+
+#icons-selection  {
+  padding-top: 10%;
+}
+
+#biome-selection h4, #icons-selection h4 {
+  text-align: center;
+  margin-bottom: 3%;
+}
+
+#biome-selection p, #icons-selection p {
+  font-size: 1.75em;
+  padding: 0 5%;
+}
+
+#generate-map-button-container {
+  margin-top: 20%;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20%;
+}
+
+
+
 
 #chat-widget {
   box-sizing: border-box;
   border: 1px solid black;
   width: 25%;
 }
-
-
 
 /* ==FOOTER== */
 footer {

@@ -11,39 +11,31 @@
                     <input id="save-map-button" type="submit" value="Save Map">
                 </form>
             </div>
-            <div id="map-table">
-            <div id="unrolled-map">
-                <ul id="alpha-coordinates">
-                    <li> </li><li>A</li><li>B</li><li>C</li><li>D</li><li>E</li><li>F</li><li>G</li><li>H</li><li>I</li><li>J</li><li>K</li><li>L</li><li>M</li><li>N</li><li>O</li><li>P</li><li>Q</li><li>R</li><li>S</li><li>T</li><li>U</li><li>V</li><li>W</li><li>X</li><li>Y</li><li>Z</li>
-                </ul>
-                <ul id="numeric-coordinates">
-                    <li>1</li><li>2</li><li>3</li><li>4</li><li>5</li><li>6</li><li>7</li><li>8</li><li>9</li><li>10</li><li>11</li><li>12</li><li>13</li><li>14</li><li>15</li><li>16</li><li>17</li><li>18</li><li>19</li><li>20</li><li>21</li><li>22</li><li>23</li><li>24</li><li>25</li><li>26</li>
-                </ul>
-                <div class="map-grid"></div>
-                </div>
-            </div>
+            <div id="map-table"></div>
         </div>
         <div id="world-options-section">
             <form action="x">
-                <fieldset class="biome-selection">
-                    <p>Select Biomes
-                    <br />
-                        <input id="water" type="checkbox" name="water" value="water"> Water
-                        <input id="plains" type="checkbox" name="plains" value="plains"> Plains
-                        <input id="mountains" type="checkbox" name="mountains" value="mountains"> Mountains
-                        <input id="forest" type="checkbox" name="forest" value="forest"> Forest
-                    </p>
+                <fieldset id="biome-selection">
+                    <h4>Select Biomes</h4>
+                    <p>
+                        <input id="water" type="checkbox" name="water" value="water"> Water<br />
+                        <input id="plains" type="checkbox" name="plains" value="plains"> Plains<br />
+                        <input id="mountains" type="checkbox" name="mountains" value="mountains"> Mountains<br />
+                        <input id="forest" type="checkbox" name="forest" value="forest"> Forest<br />
+                    <p>
+                    <div id="generate-map-button-container">
+                        <input id="generate-map-button" type="submit" name="generate-map" value="Generate Map">
+                    </div>
                 </fieldset>
                 <fieldset id="icons-selection">
-                    <p>Select Tokens
-                    <br />
-                        <input id="Landmark" type="checkbox" name="Landmark" value="Landmark"> Landmark
-                        <input id="Settlement" type="checkbox" name="Settlement" value="Settlement"> Settlement
-                        <input id="Encounter" type="checkbox" name="Encounter" value="Encounter"> Encounter
-                        <input id="Charactor" type="checkbox" name="Charactor" value="Charactor"> Charactor
-                    </p>
+                    <h4>Select Tokens</h4>
+                    <p>
+                        <input id="Landmark" type="checkbox" name="Landmark" value="Landmark"> Landmark<br />
+                        <input id="Settlement" type="checkbox" name="Settlement" value="Settlement"> Settlement<br />
+                        <input id="Encounter" type="checkbox" name="Encounter" value="Encounter"> Encounter<br />
+                        <input id="Charactor" type="checkbox" name="Charactor" value="Charactor"> Charactor<br />
+                    <p>
                 </fieldset>
-                <button>Generate Map</button>
             </form>
         </div>
         <div id="chat-widget">space reserved for chat interface</div>
