@@ -124,13 +124,13 @@ main {
   border: 1px solid black;
 }
 /* View Map Page */
-#map-section {
+#map-section-create {
   width: 60%;
 }
 
 #save-new-map-form {
   width: 100%;
-  height: 7.11%;
+  height: 10%;
   text-align: center;
 }
 
@@ -183,8 +183,33 @@ main {
   margin-bottom: 20%;
 }
 
+/* View Map page */
+#map-section-view {
+  width: 75%;
+}
 
+#save-state-form {
+  width: 100%;
+  height: 10%;
+  text-align: center;
+}
 
+#save-state-form form {
+  display: flex;
+  align-items: center;
+}
+
+#save-state-form form h3 {
+  width: 80%;
+  margin: 1%;
+  text-align: center;
+}
+
+#save-state-button {
+  height: 35px;
+  width : 15%;
+  font-size: 20px;
+} 
 
 #chat-widget {
   box-sizing: border-box;
