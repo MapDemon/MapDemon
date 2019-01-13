@@ -41,8 +41,7 @@ const newMap = function(x,y){
 
 // given a mapData, populates it with terrain. "cutoffs" is an array governing the probabilities of each area "picking" a new member; default is each area gets even probability
 const terraform = function(map, cutoffs){
-    let seed = Math.floor(map.length/25);
-    if(!seed)seed=1;
+    let seed = 1
     let seeds = spore(map, [seed,seed,seed,seed]);
     //this array will contain the candidate pool for area growth. when a coordinate point is populated, it needs to be removed from all candidate pools. For now we default to one of each terrain type. We can mess around with this later.
     if(!cutoffs)cutoffs = [.25,.5,.75,1];
@@ -55,6 +54,7 @@ const terraform = function(map, cutoffs){
       } while(!seeds[type].length)
 
       let sprouted = sprout(map, seeds[type], type);
+
       for(let i = 0; i < seeds.length; i++){
         seeds[i] = seeds[i].filter((coord) => !(coord[0] === sprouted[0] && coord[1] === sprouted[1]));
       }
@@ -74,22 +74,21 @@ const germinate = function(cutoffs){
 
 
 // given a mapData and an array, places a number of terrain seeds of each type of terrain on the map, and returns a 2d array of their coordinates. for example, an imput of (map, [1, 2, 0, 2]) will return one plains seed, two mountains seeds, no forest seeds, and two water seeds. These seeds are not yet populated on the actual map data. (This is actually a 3d array, but the last dimension is only two deep because the coordinates are themselves 2d.)
-const spore = function(map, arr){
-    let seeds = [];
+const spore = function(map, arr, seeds){
+    if (!seeds) seeds = [];
     for(let i = 0; i < arr.length; i++){
         seeds.push([]);
         let j = 0;
         while(j < arr[i]){
-            let x = Math.floor(Math.random()*map.length);
-            let y = Math.floor(Math.random()* (map[i].length));
+            let seed = plant(map);
 
             //check if we already have this coordinate occupied by another seed
             let badSeed = false;
             for(let k = 0; k < seeds.length; k++){
-                if(dupCoord(seeds[k], [x,y]))badSeed = true;
+                if(dupCoord(seeds[k], seed))badSeed = true;
             }
             if(!badSeed){
-                seeds[i].push([x,y]);
+                seeds[i].push(seed);
                 j++;
             }
         }
@@ -99,19 +98,39 @@ const spore = function(map, arr){
 
 };
 
+
+//picks a random unpopulated coordinate pair. assumes the map still has blank points.
+const plant = function(map){
+    let x;
+    let y;
+    do{
+        x = Math.floor(Math.random() * map.length);
+        y = Math.floor(Math.random() * map[x].length);
+    }while(map[x][y]+1)
+
+    return [x,y];
+}
+
 // chooses a coordinate point from the candidate pool, populates it on the map, and expands the candidate pool by radius for area growth. returns the coordinates of the selected coordinate point.
 const sprout = function(map, pool, type){
+
+    //some chance of planting a new seed at a random point
+    if(Math.random() < .01){
+        pool.push(plant(map));
+    }
+
+
     let bud = pool[biasedRandom(pool.length, terrainTypes[type].bias)];
     map[bud[0]][bud[1]] = type;
 
     //expand pool
 
-    // OLD VERSION expands in square form
+    //expands in square form
     for(let i = bud[0]-1; i <= bud[0]+1; i++){
         if(i > -1 && i < map.length){
             for(let j = bud[1]-1; j <= bud[1]+1; j++){
                 if(j > -1 && j < map[i].length){
-                    if(map[i][j] ===  -1 && !dupCoord(pool, [i,j])){
+                    if(map[i][j] ===  -1  && !dupCoord(pool, [i,j])){
                         pool.push([i,j]);
                     }
                 }
@@ -119,24 +138,25 @@ const sprout = function(map, pool, type){
         }
     }
 
-    // //NEW VERSION expands in cross form
-    // if(bud[0]-1 > 0 && !dupCoord(pool, [bud[0]-1,bud[1]])) pool.push([bud[0]-1,bud[1]])
-    // if(bud[0]+1 < map.length && !dupCoord(pool, [bud[0]+1,bud[1]])) pool.push([bud[0]+1,bud[1]])
-    // if(bud[1]-1 > 0 && !dupCoord(pool, [bud[0],bud[1]-1])) pool.push([bud[0],bud[1]-1])
-    // if(bud[1]+1 < map[0].length && !dupCoord(pool, [bud[0],bud[1]+1])) pool.push([bud[0],bud[1]+1])
+    // //expands in cross form
+    // if(bud[0]-1 > -1) pool.push([bud[0]-1,bud[1]]);
+    // if(bud[0]+1 < map.length) pool.push([bud[0]+1,bud[1]]);
+    // if(bud[1]-1 > -1) pool.push([bud[0],bud[1]-1]);
+    // if(bud[1]+1 < map[0].length) pool.push([bud[0],bud[1]+1]);
+
     return bud;
 
 };
 
-// returns a whole number from 0 to specified range. if bias = 1, bias towards larger numbers; if bias = -1, bias to smaller numbers. do not bias in all other cases.
+// returns a whole number from 0 to specified range. if bias = -1, bias towards larger numbers; if bias = 1, bias to smaller numbers. do not bias in all other cases.
     // in terms of area growth, this means that bias = 1 will be more likely to return recently pushed coordinates, which means the area will grow in a linear fashion, as in rivers or mountain ranges; bias -1 will prefer earlier coordinates, growing the area in a more blobular fashion, such as lakes
 const biasedRandom = function(range, bias){
     let ranNum = Math.random();
     if(bias){
         if(bias === 1) ranNum = Math.pow(ranNum, 4);
-        else if(bias === -1) ranNum = 1 - Math.pow(ranNum, 4);
+        else if(bias === -1) ranNum = 1 - Math.pow(ranNum, 2);
     }
-    let num = Math.floor(ranNum * (range-1))
+    let num = Math.round(ranNum * (range-1))
     return num;
 };
 
