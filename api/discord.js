@@ -34,6 +34,7 @@ router.get('/callback', catchAsync(async (req, res) => {
       },
     });
   const json = await response.json();
+  console.log(code);
   res.redirect(`/`);
 }));
 
