@@ -16,16 +16,14 @@ require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
-const redirect = encodeURIComponent(`http://localhost:${PORT}/api/discord/callback`);
-const redirect_uri = process.env.REDIRECT_URI || `http://localhost:${PORT}/api/discord/callback`;
+const redirect = encodeURIComponent(`http://localhost:${PORT}/callback`);
+const redirect_uri = process.env.REDIRECT_URI || `http://localhost:${PORT}/callback`;
 
 // Application Setup
 app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('./public'));
-// app.use('/api/discord', require('./api/discord'));
-
 
 
 
