@@ -7,6 +7,7 @@ const terrainTypes = [];
 //constructor function for map objects
 const mapObj = function(size){
     this.mapData = newMap(size);
+    this.blanks = size * size;
     this.children = [];
     atlas.push(this);
 };
@@ -39,21 +40,22 @@ const newMap = function(x,y){
     return arr;
 };
 
-// given a mapData, populates it with terrain. "cutoffs" is an array governing the probabilities of each area "picking" a new member; default is each area gets even probability
+// given a mapObj, populates its mapData with terrain. "cutoffs" is an array governing the probabilities of each area "picking" a new member; default is each area gets even probability
 const terraform = function(map, cutoffs){
     let seed = 1
-    let seeds = spore(map, [seed,seed,seed,seed]);
+    let seeds = spore(map.mapData, [seed,seed,seed,seed]);
     //this array will contain the candidate pool for area growth. when a coordinate point is populated, it needs to be removed from all candidate pools. For now we default to one of each terrain type. We can mess around with this later.
     if(!cutoffs)cutoffs = [.25,.5,.75,1];
     //likewise, we can mess around with this later.
 
-    while(hasBlanks(map)){
+    while(map.blanks){
       let type;
       do{
         type =  germinate(cutoffs);
       } while(!seeds[type].length)
 
-      let sprouted = sprout(map, seeds[type], type);
+      let sprouted = sprout(map.mapData, seeds[type], type);
+      map.blanks--;
 
       for(let i = 0; i < seeds.length; i++){
         seeds[i] = seeds[i].filter((coord) => !(coord[0] === sprouted[0] && coord[1] === sprouted[1]));
@@ -73,7 +75,7 @@ const germinate = function(cutoffs){
 };
 
 
-// given a mapData and an array, places a number of terrain seeds of each type of terrain on the map, and returns a 2d array of their coordinates. for example, an imput of (map, [1, 2, 0, 2]) will return one plains seed, two mountains seeds, no forest seeds, and two water seeds. These seeds are not yet populated on the actual map data. (This is actually a 3d array, but the last dimension is only two deep because the coordinates are themselves 2d.)
+// given a mapData and an array (and optionally an array of existing seeds), places a number of terrain seeds of each type of terrain on the map, and returns a 2d array of their coordinates. for example, an imput of (map, [1, 2, 0, 2]) will return one plains seed, two mountains seeds, no forest seeds, and two water seeds. These seeds are not yet populated on the actual map data. (This is actually a 3d array, but the last dimension is only two deep because the coordinates are themselves 2d.)
 const spore = function(map, arr, seeds){
     if (!seeds) seeds = [];
     for(let i = 0; i < arr.length; i++){
@@ -139,21 +141,32 @@ const sprout = function(map, pool, type){
     }
 
     // //expands in cross form
-    // if(bud[0]-1 > -1) pool.push([bud[0]-1,bud[1]]);
-    // if(bud[0]+1 < map.length) pool.push([bud[0]+1,bud[1]]);
-    // if(bud[1]-1 > -1) pool.push([bud[0],bud[1]-1]);
-    // if(bud[1]+1 < map[0].length) pool.push([bud[0],bud[1]+1]);
+    // if(validPool(map, pool, bud[0]-1, bud[1])) pool.push([bud[0]-1,bud[1]]);
+    // if(validPool(map, pool, bud[0]+1, bud[1])) pool.push([bud[0]+1,bud[1]]);
+    // if(validPool(map, pool, bud[0], bud[1]-1)) pool.push([bud[0],bud[1]-1]);
+    // if(validPool(map, pool, bud[0], bud[1]+1)) pool.push([bud[0],bud[1]+1]);
 
     return bud;
 
 };
+
+//checks if a coordinate can be pushed into the pool
+const validPool = function(map, pool, x, y){
+    if(x < 0) return false;
+    if(y < 0) return false;
+    if(x >= map.length) return false;
+    if(y >= map.length) return false;
+    if(dupCoord(pool,x,y))return false;
+    if(map[x][y]+1) return false;
+    return true;
+}
 
 // returns a whole number from 0 to specified range. if bias = -1, bias towards larger numbers; if bias = 1, bias to smaller numbers. do not bias in all other cases.
     // in terms of area growth, this means that bias = 1 will be more likely to return recently pushed coordinates, which means the area will grow in a linear fashion, as in rivers or mountain ranges; bias -1 will prefer earlier coordinates, growing the area in a more blobular fashion, such as lakes
 const biasedRandom = function(range, bias){
     let ranNum = Math.random();
     if(bias){
-        if(bias === 1) ranNum = Math.pow(ranNum, 4);
+        if(bias === 1) ranNum = Math.pow(ranNum, 3);
         else if(bias === -1) ranNum = 1 - Math.pow(ranNum, 2);
     }
     let num = Math.round(ranNum * (range-1))
@@ -162,12 +175,7 @@ const biasedRandom = function(range, bias){
 
 //checks if a mapData has unpoplated points
 const hasBlanks = function(map){
-    for(let i = 0; i < map.length; i++){
-        for(let j = 0; j < map[i].length; j++){
-            if (map[i][j] === -1) return true;
-        }
-    }
-    return false;
+ return map.blanks;
 };
 
 //takes in an array of coordinates and checks if it contains the specified coordinate
@@ -224,11 +232,15 @@ const renderBoard = function (map) {
 //     for(let i = 0; i < seeds.length; i++){
 //       seeds[i] = seeds[i].filter((coord) => !(coord[0] === sprouted[0] && coord[1] === sprouted[1]));
 //     }
+
+//     console.log(sprouted);
+//     console.log(seeds[type]);
 //     renderBoard(mappy);
 // }
 
 const mapGen = function(){
-    let mappy = newMap(104);
+    let mappy = new mapObj(104);
     terraform(mappy);
-    renderBoard(mappy);
+    renderBoard(mappy.mapData);
+    console.log(mappy);
 };

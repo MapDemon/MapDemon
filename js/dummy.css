@@ -2,16 +2,14 @@ table {
     border-collapse:separate;
     border-spacing: 0px;
     margin: auto;
-    height: 400px;
-    width: 400px;
     margin-bottom: 50px;
 }
 body{
     background-color: black;
 }
 td{
-    height: 2px;
-    width: 2px;
+    height: 1px;
+    width: 1px;
 }
 
 .blank{
