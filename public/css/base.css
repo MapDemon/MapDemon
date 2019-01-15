@@ -58,7 +58,7 @@ header button {
 /* ==MAIN SECTION & COMPONENTS== */
 main {
   height: 80vh;
-  padding: 0 2vw;
+  padding-left: 0 2vw;
   display: flex;
 }
 

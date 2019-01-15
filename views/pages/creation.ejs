@@ -2,45 +2,47 @@
 <html lang="en">
 <%- include('../partials/head') %>
 <body>
-    <%- include('../partials/header') %>
-    <main>
-        <div id="map-section-create">
-            <div id="save-new-map-form">
-                <form action="x" method="x">
-                    <input id="map-name-input" type="text" value="Map Name">
-                    <input id="save-map-button" type="submit" value="Save Map">
-                </form>
-            </div>
-            <div id="map-table"></div>
-        </div>
-        <div id="world-options-section">
-            <form action="x">
-                <fieldset id="biome-selection">
-                    <h4>Select Biomes</h4>
-                    <p>
-                        <input id="water" type="checkbox" name="water" value="water"> Water<br />
-                        <input id="plains" type="checkbox" name="plains" value="plains"> Plains<br />
-                        <input id="mountains" type="checkbox" name="mountains" value="mountains"> Mountains<br />
-                        <input id="forest" type="checkbox" name="forest" value="forest"> Forest<br />
-                    <p>
-                    <div id="generate-map-button-container">
-                        <input id="generate-map-button" type="submit" name="generate-map" value="Generate Map">
-                    </div>
-                </fieldset>
-                <fieldset id="icons-selection">
-                    <h4>Select Tokens</h4>
-                    <p>
-                        <input id="Landmark" type="checkbox" name="Landmark" value="Landmark"> Landmark<br />
-                        <input id="Settlement" type="checkbox" name="Settlement" value="Settlement"> Settlement<br />
-                        <input id="Encounter" type="checkbox" name="Encounter" value="Encounter"> Encounter<br />
-                        <input id="Charactor" type="checkbox" name="Charactor" value="Charactor"> Charactor<br />
-                    <p>
-                </fieldset>
-            </form>
-        </div>
-        <div id="chat-widget">space reserved for chat interface</div>
-    </main>
-    <%- include('../partials/footer') %>
+  <%- include('../partials/header') %>
+  <main>
+    <div id="map-section-create">
+      <div id="save-new-map-form">
+        <form action="x" method="x">
+          <input id="map-name-input" type="text" value="Map Name">
+          <input id="save-map-button" type="submit" value="Save Map">
+        </form>
+      </div>
+      <div id="map-table"></div>
+    </div>
+    <div id="world-options-section">
+      <form action="x">
+        <fieldset id="biome-selection">
+          <h4>Select Biomes</h4>
+          <p>
+          <input id="water" type="checkbox" name="water" value="water"> Water<br />
+          <input id="plains" type="checkbox" name="plains" value="plains"> Plains<br />
+          <input id="mountains" type="checkbox" name="mountains" value="mountains"> Mountains<br />
+          <input id="forest" type="checkbox" name="forest" value="forest"> Forest<br />
+          <p>
+          <div id="generate-map-button-container">
+            <input id="generate-map-button" type="submit" name="generate-map" value="Generate Map">
+          </div>
+        </fieldset>
+        <fieldset id="icons-selection">
+          <h4>Select Tokens</h4>
+          <p>
+          <input id="Landmark" type="checkbox" name="Landmark" value="Landmark"> Landmark<br />
+          <input id="Settlement" type="checkbox" name="Settlement" value="Settlement"> Settlement<br />
+          <input id="Encounter" type="checkbox" name="Encounter" value="Encounter"> Encounter<br />
+          <input id="Charactor" type="checkbox" name="Charactor" value="Character"> Character<br />
+          <p>
+        </fieldset>
+      </form>
+    </div>
+    <div id="chat-widget">
+      <widgetbot server="533761129646784523" channel="533761130162552853" width="382" height="599" margin="0px" shard="https://cl3.widgetbot.io"></widgetbot>
+    </div>
+  </main>
+  <%- include('../partials/footer') %>
 </body>
-
+<script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script>
 </html>
