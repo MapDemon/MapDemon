@@ -1,8 +1,13 @@
-DROP TABLE IF EXISTS maps;
+DROP TABLE IF EXISTS users, maps;
 
-CREATE TABLE maps(
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
-    userName VARCHAR(255),
+    username VARCHAR(255) UNIQUE NOT NULL 
+);
+
+CREATE TABLE IF NOT EXISTS maps (
+    id SERIAL PRIMARY KEY,
+    username VARCHAR(255) REFERENCES users (username),
     adventure VARCHAR(255),
-    mapData VARCHAR(1200)
-)
+    mapdata VARCHAR(1200)
+);
