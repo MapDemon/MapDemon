@@ -4,7 +4,9 @@ const express = require('express');
 const fetch = require('node-fetch');
 const btoa = require('btoa');
 const querystring = require('querystring');
+// const app = express();
 const request = require('request');
+const superagent = require('superagent');
 const { catchAsync } = require('../utils');
 
 const router = express.Router();
@@ -19,7 +21,7 @@ const redirect = encodeURIComponent(`http://localhost:${PORT
 const redirect_uri = process.env.REDIRECT_URI || `http://localhost:${PORT}/api/discord/callback`;
 
 // app.use(express.static('./')); (disabled due to no app = express call)
-
+// router.use('../', require('../'));
 
 router.get('/login', (req, res) => {
   res.redirect('https://discordapp.com/oauth2/authorize?' +
@@ -55,12 +57,35 @@ router.get('/callback', catchAsync(async (req, res) => {
   need to remove it again, as it's a security risk, but leaving it here for now
   
   https://www.youtube.com/watch?v=f5OLDvwP-Ug
-  question: above link still has their access token in URL, how do we hide this?
+  question: above link still has different backend and frontend - is this considered good practice?
+  we currently don't have a different frontend and backend.
 
+  might need different view to direct users towards? or how do we make our site recognize that we have an access token then make relevant changes and pulls from the Discord API? (likely reasons why we need to get POSTMAN access!)
   
+  connect to this to retrieve user data: https://discordapp.com/users/@me
 
   */
   })
 }));
+
+// KP - this is copied over from my Lab 08, will need to convert so it works properly
+function fetchUser(query) {
+  const URL = `http://discordapp.com/api/users/@me?Authorization=${code}`;
+
+  return superagent.get(URL)
+  .then(result => {
+    console.log('User info retreived from Discords');
+
+    let dm = new DM(results.body.username);
+    let SQL = `INSERT INTO`;
+    // needs schema for users
+
+    // and store user in our DB
+    return clientInformation.query(SQL, [])
+      then(() => {
+        return dm;
+      })
+  })
+}
 
 module.exports = router;
