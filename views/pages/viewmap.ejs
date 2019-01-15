@@ -2,23 +2,26 @@
 <html lang="en">
 <%- include('../partials/head') %>
 <body>
-    <%- include('../partials/header') %>
-    <main>
-        <div id="map-section-view">
-            <div id="save-state-form">
-                <form action="x" method="x">
-                    <h3>Map Name Pulled from DB, show using EJS</h3>
-                    <input id="save-state-button" type="submit" value="Save Map">
-                </form>
-            </div>
-            <div class="table">
-                <div class="coordinates">
-                    <div class="map-grid"></div>
-                </div>
-            </div>
+  <%- include('../partials/header') %>
+  <main>
+    <div id="map-section-view">
+      <div id="save-state-form">
+        <form action="x" method="x">
+          <h3>Map Name Pulled from DB, show using EJS</h3>
+          <input id="save-state-button" type="submit" value="Save Map">
+        </form>
+      </div>
+      <div class="table">
+        <div class="coordinates">
+          <div class="map-grid"></div>
         </div>
-        <div id="chat-widget"></div>
-    </main>
-    <%- include('../partials/footer') %>
+      </div>
+    </div>
+    <div id="chat-widget">
+        <widgetbot server="533761129646784523" channel="533761130162552853" width="382" height="599" margin="0px" shard="https://cl3.widgetbot.io"></widgetbot>
+    </div>
+  </main>
+  <%- include('../partials/footer') %>
 </body>
+<script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script>
 </html>
