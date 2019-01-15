@@ -34,7 +34,10 @@ app.set('view engine', 'ejs');
 app.get('/', home);
 app.get('/creation', createMap);
 app.get('/viewmap', viewMap);
-app.get('/about', aboutPage)
+app.get('/about', aboutPage);
+
+// maybe move '/login' route to here if we decide to reduce down to one JS file?
+
 
 app.post('/viewmap/:id', saveMap);
 app.put('/viewmap', updateMap);
