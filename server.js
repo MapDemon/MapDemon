@@ -28,9 +28,9 @@ app.use(express.static('./public'));
 
 
 // Database Setup
-const client = new pg.Client(process.env.DATABASE_URL);
-client.connect();
-client.on('error', err => console.error(err));
+// const client = new pg.Client(process.env.DATABASE_URL);
+// client.connect();
+// client.on('error', err => console.error(err));
 
 
 // Routes
@@ -49,7 +49,7 @@ app.get('/login', (req, res) => {
   res.redirect('https://discordapp.com/oauth2/authorize?' +
     querystring.stringify({
       client_id: process.env.CLIENT_ID,
-      scope: 'identify' /* email connections guilds guilds.join gdm.join bot messages.read' */,
+      scope: 'identify bot guilds guilds.join messages.read' /* email connections gdm.join */,
       type: 'code',
       response_type: 'code',
       redirect_uri
@@ -68,34 +68,33 @@ app.get('/callback', catchAsync(async (req, res) => {
       },
     });
   const json = await response.json();
-  console.log('71', code);
+  console.log(code);
   request.post(response, function(error, response, body) {
     let uri = process.env.FRONTEND_URI || 'http://localhost:3000';
     res.redirect(uri + '?access_token=' + code);
   })
-  fetchUser(code)
 }));
 
 
 // Route Functions
 
-function home(req, res) {
-  res.render('pages/index');
+function home(request, response) {
+  response.render('pages/index');
 }
 
-function createMap(req, res) {
-  res.render('pages/creation');
+function createMap(request, response) {
+  response.render('pages/creation');
 }
 
-function viewMap(req, res) {
-  res.render('pages/viewmap');
+function viewMap(request, response) {
+  response.render('pages/viewmap');
 }
 
 function saveMap(req, res) {
 }
 
-function updateMap(req, res) {
-  res.render('pages/viewmap');
+function updateMap(request, response) {
+  response.render('pages/viewmap');
   // add code to update map here
 }
 
@@ -103,28 +102,27 @@ function deleteMap (req, res) {
 
 }
 
-function aboutPage(req, res) {
-  res.render('pages/about');
+function aboutPage(request, response) {
+  response.render('pages/about');
 }
 
 
 
-function fetchUser(code) {
-  console.log("114", code)
+function fetchUser(query) {
   const URL = `http://discordapp.com/api/users/@me?Authorization=${code}`;
 
   return superagent.get(URL)
   .then(result => {
     console.log('User info retreived from Discords');
 
-    let dm = new DM(result.body.username);
-    let SQL = `INSERT INTO users (username) VALUES($1)`;
+    let dm = new DM(results.body.username);
+    let SQL = `INSERT INTO`;
     // needs schema for users
 
     // and store user in our DB
-    return clientInformation.query(SQL, [username])
-      .then( result => {
-        result.status(200).send(result.rows[0]);
+    return clientInformation.query(SQL, [])
+      then(() => {
+        return dm;
       })
   })
 }
