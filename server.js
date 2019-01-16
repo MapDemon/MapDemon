@@ -10,8 +10,8 @@ const app = express();
 const pg = require('pg');
 const { catchAsync } = require('./utils');
 const request = require('request');
-const bmp = require('bmp-js')
-const writer = new (require('buffer-writer')());
+// const bmp = require('bmp-js')
+// const writer = new (require('buffer-writer')());
 require('dotenv').config();
 
 // Load environment variables from .env file
