@@ -32,6 +32,12 @@ const client = new pg.Client(process.env.DATABASE_URL);
 client.connect();
 client.on('error', err => console.error(err));
 
+// Error Handler
+function handleError (err, res) {
+  console.error(err);
+  res.render('pages/error', err);
+}
+
 
 // Routes
 app.get('/', home);
@@ -68,12 +74,12 @@ app.get('/callback', catchAsync(async (req, res) => {
       },
     });
   const json = await response.json();
-  console.log('71', code);
   request.post(response, function(error, response, body) {
     let uri = process.env.FRONTEND_URI || 'http://localhost:3000';
     res.redirect(uri + '?access_token=' + code);
   })
-  fetchUser(code)
+  console.log( '81', code)
+  fetchUser(req, res, code)
 }));
 
 
@@ -109,11 +115,12 @@ function aboutPage(req, res) {
 
 
 
-function fetchUser(code) {
+function fetchUser(req, res, code) {
   console.log("114", code)
-  const URL = `http://discordapp.com/api/users/@me?Authorization=${code}`;
-
+  const URL = `http://discordapp.com/api/users/@me`;
+  
   return superagent.get(URL)
+  .set('Authorization', `Bearer ${code}`)
   .then(result => {
     console.log('User info retreived from Discords');
 
@@ -126,6 +133,10 @@ function fetchUser(code) {
       .then( result => {
         result.status(200).send(result.rows[0]);
       })
+    })
+  .catch( err => {
+    console.log('fetchUser error')
+    return handleError(err, res);
   })
 }
 
