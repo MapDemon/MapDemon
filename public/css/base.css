@@ -1,3 +1,11 @@
+body{
+  color: #9A879E;
+  background-image: url(../images/tabletop.jpg);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+
 /* ==FONTS== */
 h1 {
   font-size: 3.75em;
@@ -30,7 +38,6 @@ figcaption p {
 
 /* ==HEADER & NAVIGATION== */
 header {
-  background-color: grey;
   height: 15vh;
   width: 100%;
   display: flex;
@@ -58,9 +65,10 @@ header button {
 /* ==MAIN SECTION & COMPONENTS== */
 main {
   height: 80vh;
-  padding-left: 0 2vw;
+  /* padding-left: 0 2vw; */
   display: flex;
 }
+
 
 /* Home/Login/Index Page */
 #login-section {
@@ -212,14 +220,13 @@ main {
 } 
 
 #chat-widget {
-  width: 25%;
+  width: 24%;
   height: 100%;
 }
 
 /* ==FOOTER== */
 footer {
   height: 5vh;
-  background-color: grey;
   display: flex;
   justify-content: center;
   align-items: center;
