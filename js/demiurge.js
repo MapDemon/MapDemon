@@ -1,3 +1,4 @@
+'use strict';
 // holds all our maps.
 const atlas = [];
 
@@ -9,13 +10,15 @@ const mapObj = function(size){
     this.mapData = newMap(size);
     this.blanks = size * size;
     this.children = [];
+    this.index = atlas.length;
     atlas.push(this);
 };
 
 //constructor function for terrain types
-const terrain = function(name, bias){
+const terrain = function(name, bias, curve){
     this.name = name;
     this.bias = bias;
+    this.curve = curve;
     terrainTypes.push(this);
 };
 
@@ -101,13 +104,14 @@ const spore = function(map, arr, seeds){
 };
 
 
-//picks a random unpopulated coordinate pair. assumes the map still has blank points.
-const plant = function(map){
+//picks a random unpopulated coordinate pair. assumes the map still has blank points. curve is an optional variable that biases to the edges of the map if negative, the center if positive, and neither if 0.
+const plant = function(map, curve){
+    if(!curve)curve=0;
     let x;
     let y;
     do{
-        x = Math.floor(Math.random() * map.length);
-        y = Math.floor(Math.random() * map[x].length);
+        x = biasedRandom(map.length, curve);
+        y = biasedRandom(map.length, curve);
     }while(map[x][y]+1)
 
     return [x,y];
@@ -118,7 +122,7 @@ const sprout = function(map, pool, type){
 
     //some chance of planting a new seed at a random point
     if(Math.random() < .01){
-        pool.push(plant(map));
+        pool.push(plant(map, terrainTypes[type].curve));
     }
 
 
@@ -161,14 +165,31 @@ const validPool = function(map, pool, x, y){
     return true;
 }
 
-// returns a whole number from 0 to specified range. if bias = -1, bias towards larger numbers; if bias = 1, bias to smaller numbers. do not bias in all other cases.
-    // in terms of area growth, this means that bias = 1 will be more likely to return recently pushed coordinates, which means the area will grow in a linear fashion, as in rivers or mountain ranges; bias -1 will prefer earlier coordinates, growing the area in a more blobular fashion, such as lakes
+// returns a whole number from 0 to specified range. if bias = -1, bias towards larger numbers; if bias = 1, bias to smaller numbers.
+    // in terms of area growth, this means that bias = 1 will be more likely to return recently pushed coordinates, which means the area will grow in a linear fashion, as in rivers or mountain ranges; bias -1 will prefer earlier coordinates, growing the area in a more blobular fashion, such as lakes.
 const biasedRandom = function(range, bias){
     let ranNum = Math.random();
     if(bias){
         if(bias === 1) ranNum = Math.pow(ranNum, 3);
         else if(bias === -1) ranNum = 1 - Math.pow(ranNum, 2);
     }
+    // switch(bias){
+    //     case -2:
+    //         if(ranNum < 0.5) ranNum = Math.pow(2 * ranNum, 2);
+    //         else ranNum = Math.pow(2 * (1-ranNum), 2);
+    //         break;
+    //     case -1:
+    //         ranNum = 1 - Math.pow(ranNum, 2);
+    //         break;
+    //     case 1:
+    //         ranNum = Math.pow(ranNum, 3);
+    //         break;
+    //     case 2:
+    //         if(ranNum < 0.5) ranNum = 1 - Math.pow(2 * ranNum, 2);
+    //         else ranNum = 1 - Math.pow(2 * (1-ranNum), 2);
+    //         break;
+    // }
+
     let num = Math.round(ranNum * (range-1))
     return num;
 };
@@ -237,6 +258,14 @@ const renderBoard = function (map) {
 //     console.log(seeds[type]);
 //     renderBoard(mappy);
 // }
+
+//deletes a map from the atlas and decrements the index of all maps following it so that it is still correct.
+const deleteMap = function(index){
+    atlas = atlas.filter(map => map.index !== index);
+    for(let i = index; i < atlas.length; i++){
+        atlas[i].index--;
+    }
+}
 
 const mapGen = function(){
     let mappy = new mapObj(104);
