@@ -14,6 +14,8 @@ const request = require('request');
 // const writer = new (require('buffer-writer')());
 require('dotenv').config();
 
+require('./js/cartographer.js');
+
 // Load environment variables from .env file
 const PORT = process.env.PORT || 3000;
 const CLIENT_ID = process.env.CLIENT_ID;
