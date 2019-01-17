@@ -10,6 +10,8 @@ const app = express();
 const pg = require('pg');
 const { catchAsync } = require('./utils');
 const request = require('request');
+// const bmp = require('bmp-js')
+// const writer = new (require('buffer-writer')());
 require('dotenv').config();
 
 // Load environment variables from .env file
@@ -24,19 +26,13 @@ app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('./public'));
-
+app.use(express.static('./js/'));
 
 
 // Database Setup
 const client = new pg.Client(process.env.DATABASE_URL);
 client.connect();
 client.on('error', err => console.error(err));
-
-// Error Handler
-function handleError (err, res) {
-  console.error(err);
-  res.render('pages/error', err);
-}
 
 
 // Routes
@@ -74,12 +70,12 @@ app.get('/callback', catchAsync(async (req, res) => {
       },
     });
   const json = await response.json();
+  console.log('71', code);
   request.post(response, function(error, response, body) {
     let uri = process.env.FRONTEND_URI || 'http://localhost:3000';
     res.redirect(uri + '?access_token=' + code);
   })
-  console.log( '81', code)
-  fetchUser(req, res, code)
+  fetchUser(code);
 }));
 
 
@@ -106,6 +102,9 @@ function updateMap(req, res) {
 }
 
 function deleteMap (req, res) {
+}
+
+function saveUser (req, res) {
 
 }
 
@@ -115,16 +114,15 @@ function aboutPage(req, res) {
 
 
 
-function fetchUser(req, res, code) {
+function fetchUser(code) {
   console.log("114", code)
-  const URL = `http://discordapp.com/api/users/@me`;
-  
+  const URL = `http://discordapp.com/api/users/@me?Authorization=${code}`;
+
   return superagent.get(URL)
-  .set('Authorization', `Bearer ${code}`)
   .then(result => {
     console.log('User info retreived from Discords');
 
-    let dm = new DM(result.body.username);
+    let user = new User(result.body.username);
     let SQL = `INSERT INTO users (username) VALUES($1)`;
     // needs schema for users
 
@@ -133,7 +131,7 @@ function fetchUser(req, res, code) {
       .then( result => {
         result.status(200).send(result.rows[0]);
       })
-    })
+  })
   .catch( err => {
     console.log('fetchUser error')
     return handleError(err, res);
@@ -148,7 +146,19 @@ function fetchUser(req, res, code) {
 // Constructors
 function Map(map) {
   // parameters go here - one likely that ties userID to this map
+  this.mapName;
+  this.adventure;
+  this.mapId;
+  this.mapData;
+  this.userId; //fkey
 }
+
+function User(user) {
+  this.userName;
+  this.userId;
+  this.isDM; //boolean
+  // saveUser(this, res);
+};
 
 
 // Server Listener
