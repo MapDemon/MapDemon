@@ -149,14 +149,25 @@ main {
 #map-table {
   width: 100%;
   height: 90%;
-  box-sizing: border-box;
-  border: 1px black solid;
+}
+
+#map-image {
+  width: 520px;
+  height: 520px;
+  background-color: rgba(255, 235, 205, 0.527); /* add map using background-image */
+  position: absolute;
+  margin-top: 20px;
+  margin-left: 10px;
 }
 
 #map-flex {
   width: 100%;
   display: flex;
   justify-content: center;
+}
+
+th {
+  background-color: blanchedalmond;
 }
 
 th, td {
