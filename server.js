@@ -41,6 +41,7 @@ app.get('/creation', createMap);
 app.get('/viewmap', viewMap);
 app.get('/about', aboutPage);
 
+//app.post('/loading', loading);
 app.post('/viewmap/:id', saveMap);
 app.put('/viewmap', updateMap);
 app.delete('/savedMap/:id', deleteMap);
@@ -105,8 +106,12 @@ function deleteMap (req, res) {
 }
 
 function saveUser (req, res) {
-
 }
+
+// function loading(req, res) {
+
+// }
+
 
 function aboutPage(req, res) {
   res.render('pages/about');
