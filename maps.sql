@@ -9,8 +9,8 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS maps (
     id SERIAL PRIMARY KEY,
     mapname VARCHAR(255),
-    user_id VARCHAR(255) REFERENCES users (id),
     mapdata VARCHAR(1200)
+    user_id INTEGER NOT NULL REFERENCES users(id),
 );
 
 

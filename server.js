@@ -39,13 +39,13 @@ client.on('error', err => console.error(err));
 app.get('/', home);
 app.post('/login', login);
 app.get('/creation/:id', createMap);
+app.post('/selectmap/:id', saveMap);
 
 
 
 app.get('/viewmap', viewMap);
 app.get('/about', aboutPage);
 
-app.post('/viewmap/:id', saveMap);
 app.put('/viewmap', updateMap);
 app.delete('/savedMap/:id', deleteMap);
 
@@ -69,7 +69,7 @@ function login(req, res) {
       })
   }
 }
-
+// ==========Login with Discord
 // maybe move '/login' route to here if we decide to reduce down to one JS file?
 app.get('/login', (req, res) => {
   res.redirect('https://discordapp.com/oauth2/authorize?' +
@@ -127,7 +127,7 @@ function fetchUser(code) {
 }
 
 
-// Route Functions
+// Page Route Functions
 
 function home(req, res) {
   res.render('pages/index');
@@ -139,16 +139,17 @@ function createMap(req, res) {
 
 function saveMap(req, res) {
   console.log('everything');
-  let SQL = `INSERT INTO maps(mapname, user_id, mapdata)`;
-  return (client.query(SQL, [maps.mapName, maps.mapdata]))
-    .then(()=>{
-      console.log('Your map has been saved.');
-    })
-    .catch( err => {
-      console.log('save map error')
-      return handleError(err, res);
-    })
+  let SQL = `INSERT INTO maps(mapname, mapdata, user_id)
+            VALUES($1, $2, $3)`;
+  return client.query(SQL, [maps.mapname, maps.mapdata, req.params.id])
+  .then( result =>  res.redirect(`/landing/${result.rows[0].id}`))
+  .catch( err => {
+    console.log('save map error')
+    return handleError(err, res);
+  })
 }
+
+
 
 
 function viewMap(req, res) {
