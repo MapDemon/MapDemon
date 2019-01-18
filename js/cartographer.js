@@ -113,7 +113,7 @@ const spore = function(map, arr, seeds){
 
 };
 
-Buffer.from()
+
 //picks a random unpopulated coordinate pair. assumes the map still has blank points. curve is an optional variable that biases to the edges of the map if negative, the center if positive, and neither if 0.
 const plant = function(map, curve){
   if(!curve)curve=0;
@@ -294,26 +294,37 @@ const bmpData = function(mapData){
   this.data = parseMap(mapData);
 }
 
+
+//takes in a mapData to be processed and a resolution, and returns a buffer.
 const parseMap = function(mapData, resolution){
+  let paintArr = [];
+
   for(let i = 0 ; i < mapData.length; i++){
-    paintRow(mapData[i], resolution);
+    paintRow(paintArr, mapData[i], resolution);
   }
 
-//   return writer.flush(); idk what this does -KP
+  //return writer.flush(); idk what this does -KP
+  //we're returning the buffer of octets -MZ
+  return Buffer.from(paintArr);
+
 }
 
-// takes in a row of mapData and paints it into a buffer. returns the buffer.
-const paintRow = function(arr, resolution){
-  for(let i = 0; i< arr.length; i++){
-    paintDot(arr[i], resolution);
+// takes in a placeholder array to be pushed into a buffer, a row of mapData, and a resolution.
+const paintRow = function(paintArr, dataArr, resolution){
+  for(let i = 0; i< dataArr.length; i++){
+    paintDot(paintArr, dataArr[i], resolution);
   }
-  paintRow(arr, resolution-1);
+  paintRow(paintArr, dataArr, resolution-1);
+  let padding = (dataArr.length*resolution)%4;
+  for(let i = 0; i <= padding; i++){
+    paintArr.push(0x000000);
+  }
 }
 
 
-const paintDot = function(type, resolution){
+const paintDot = function(arr, type, resolution){
 //   writer.prototype.addInt32(terrainColors[type]);
-  Buffer.from(terrainColors[type]);
+  arr.push(terrainColors[type]);
   
   paintDot(type, resolution-1);
 }
