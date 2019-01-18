@@ -6,9 +6,10 @@
   <main>
     <div id="map-section-create">
       <div id="save-new-map-form">
-        <form action="x" method="x">
+        <form action="/landing/:id" method="post">
           <input id="map-name-input" type="text" value="Map Name">
           <input id="save-map-button" type="submit" value="Save Map">
+          <input type="text" value="<% user_id %>" >
         </form>
       </div>
       <div id="map-table">

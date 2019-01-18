@@ -37,7 +37,11 @@ client.on('error', err => console.error(err));
 
 // Routes
 app.get('/', home);
-app.get('/creation', createMap);
+app.post('/login', login);
+app.get('/creation/:id', createMap);
+
+
+
 app.get('/viewmap', viewMap);
 app.get('/about', aboutPage);
 
@@ -45,6 +49,26 @@ app.post('/viewmap/:id', saveMap);
 app.put('/viewmap', updateMap);
 app.delete('/savedMap/:id', deleteMap);
 
+// =================================Routing Functions
+// ======= Login
+function login(req, res) {
+  let username = req.body.uname;
+  let password = req.body.pswd;
+  let inDB = false;
+  if(inDB) {
+    res.render('pages/userMaps', {maps:[]}) //This should be postgres result.rows; 
+  } else {
+    let SQL = `INSERT INTO users (username, password)
+              VALUES ($1, $2) RETURNING *`
+    return client.query(SQL, [username, password])
+      .then( result =>  res.redirect(`/creation/${result.rows[0].id}`)
+      )
+      .catch( err => {
+        console.log('Add new user error')
+        return handleError(err, res);
+      })
+  }
+}
 
 // maybe move '/login' route to here if we decide to reduce down to one JS file?
 app.get('/login', (req, res) => {
@@ -78,42 +102,6 @@ app.get('/callback', catchAsync(async (req, res) => {
   fetchUser(code);
 }));
 
-
-// Route Functions
-
-function home(req, res) {
-  res.render('pages/index');
-}
-
-function createMap(req, res) {
-  res.render('pages/creation');
-}
-
-function viewMap(req, res) {
-  res.render('pages/viewmap');
-}
-
-function saveMap(req, res) {
-}
-
-function updateMap(req, res) {
-  res.render('pages/viewmap');
-  // add code to update map here
-}
-
-function deleteMap (req, res) {
-}
-
-function saveUser (req, res) {
-
-}
-
-function aboutPage(req, res) {
-  res.render('pages/about');
-}
-
-
-
 function fetchUser(code) {
   console.log("114", code)
   const URL = `http://discordapp.com/api/users/@me?Authorization=${code}`;
@@ -137,6 +125,56 @@ function fetchUser(code) {
     return handleError(err, res);
   })
 }
+
+
+// Route Functions
+
+function home(req, res) {
+  res.render('pages/index');
+}
+
+function createMap(req, res) {
+  res.render(`pages/creation`, {user_id:req.params.id});
+}
+
+function saveMap(req, res) {
+  console.log('everything');
+  let SQL = `INSERT INTO maps(mapname, user_id, mapdata)`;
+  return (client.query(SQL, [maps.mapName, maps.mapdata]))
+    .then(()=>{
+      console.log('Your map has been saved.');
+    })
+    .catch( err => {
+      console.log('save map error')
+      return handleError(err, res);
+    })
+}
+
+
+function viewMap(req, res) {
+  res.render('pages/viewmap');
+}
+
+
+function updateMap(req, res) {
+  res.render('pages/viewmap');
+  // add code to update map here
+}
+
+function deleteMap (req, res) {
+}
+
+function saveUser (req, res) {
+
+}
+
+function aboutPage(req, res) {
+  res.render('pages/about');
+}
+
+
+
+
 
 
 
