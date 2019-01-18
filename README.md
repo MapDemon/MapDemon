@@ -1,6 +1,7 @@
 # MapDemon
 Project Members: Anthony Triplett, Evy Hahn, Karl Polintan, Mae-Mae Zhou 
-A map generator for tabletop role playing game
+
+Summary: A map generator for tabletop role playing game
 
 ::::::::::::
 USER STORIES
