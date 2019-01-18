@@ -41,7 +41,7 @@ app.get('/creation', createMap);
 app.get('/viewmap', viewMap);
 app.get('/about', aboutPage);
 
-//app.post('/loading', loading);
+app.post('/loading', loading);
 app.post('/viewmap/:id', saveMap);
 app.put('/viewmap', updateMap);
 app.delete('/savedMap/:id', deleteMap);
@@ -94,7 +94,14 @@ function viewMap(req, res) {
   res.render('pages/viewmap');
 }
 
-function saveMap(req, res) {
+
+function saveMap (id, res) {
+  let SQL = `INSERT INTO maps(id, username, adventure, mapdata)`;
+  return (client.query(SQL, [maps.id, maps.username, maps.adventure, maps.mapdata]))
+    .then(()=>{
+      console.log('Your map has been saved.');
+    })
+    .catch(error => handleError(error, res));
 }
 
 function updateMap(req, res) {
@@ -107,10 +114,13 @@ function deleteMap (req, res) {
 
 function saveUser (req, res) {
 }
+// firsttime signin - redirect user to create page
+// in process username and password get pushed into database, and userId is produced.
+// logging in after have a will list of maps
 
-// function loading(req, res) {
+function loading(req, res) {
 
-// }
+}
 
 
 function aboutPage(req, res) {

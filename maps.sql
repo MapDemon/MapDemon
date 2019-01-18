@@ -11,5 +11,4 @@ CREATE TABLE IF NOT EXISTS maps (
     username VARCHAR(255) REFERENCES users (username),
     adventure VARCHAR(255),
     mapdata VARCHAR(1200)
-    username VARCHAR(255) REFERENCES users (username)
 );
