@@ -15,10 +15,9 @@ const mapObj = function(size){
 };
 
 //constructor function for terrain types
-const terrain = function(name, bias, curve){
+const terrain = function(name, bias){
     this.name = name;
     this.bias = bias;
-    this.curve = curve;
     terrainTypes.push(this);
 };
 
@@ -85,7 +84,7 @@ const spore = function(map, arr, seeds){
         seeds.push([]);
         let j = 0;
         while(j < arr[i]){
-            let seed = plant(map);
+            let seed = plant(map, terrainTypes[i].bias * 2);
 
             //check if we already have this coordinate occupied by another seed
             let badSeed = false;
@@ -122,7 +121,7 @@ const sprout = function(map, pool, type){
 
     //some chance of planting a new seed at a random point
     if(Math.random() < .01){
-        pool.push(plant(map, terrainTypes[type].curve));
+        pool.push(plant(map));
     }
 
 
@@ -165,32 +164,37 @@ const validPool = function(map, pool, x, y){
     return true;
 }
 
-// returns a whole number from 0 to specified range. if bias = -1, bias towards larger numbers; if bias = 1, bias to smaller numbers.
+// returns a whole number from 0 to specified range. if bias = -1, bias towards larger numbers; if bias = 1, bias to smaller numbers; if bias = -2, bias to edges; if bias = 2, bias to center.
     // in terms of area growth, this means that bias = 1 will be more likely to return recently pushed coordinates, which means the area will grow in a linear fashion, as in rivers or mountain ranges; bias -1 will prefer earlier coordinates, growing the area in a more blobular fashion, such as lakes.
 const biasedRandom = function(range, bias){
     let ranNum = Math.random();
-    if(bias){
-        if(bias === 1) ranNum = Math.pow(ranNum, 3);
-        else if(bias === -1) ranNum = 1 - Math.pow(ranNum, 2);
-    }
-    // switch(bias){
-    //     case -2:
-    //         if(ranNum < 0.5) ranNum = Math.pow(2 * ranNum, 2);
-    //         else ranNum = Math.pow(2 * (1-ranNum), 2);
-    //         break;
-    //     case -1:
-    //         ranNum = 1 - Math.pow(ranNum, 2);
-    //         break;
-    //     case 1:
-    //         ranNum = Math.pow(ranNum, 3);
-    //         break;
-    //     case 2:
-    //         if(ranNum < 0.5) ranNum = 1 - Math.pow(2 * ranNum, 2);
-    //         else ranNum = 1 - Math.pow(2 * (1-ranNum), 2);
-    //         break;
+    // if(bias){
+    //     if(bias === 1) ranNum = Math.pow(ranNum, 3);
+    //     else if(bias === -1) ranNum = 1 - Math.pow(ranNum, 2);
     // }
+    switch(bias){
+        case 2:
+            ranNum = (Math.pow((2 * ranNum) - 1, 3)+1)/2;
+            break;
+        case -1:
+            ranNum = 1 - Math.pow(ranNum, 2);
+            break;
+        case 1:
+            ranNum = Math.pow(ranNum, 3);
+            break;
+        case -2:
+            if(ranNum > .5){
+                ranNum = (Math.pow((2 * ranNum) - 1, 1/3)+1)/2;
+            }
+            else{
+                ranNum = 1 - (Math.pow((2 * (1-ranNum)), 1/3)+1)/2;
+            }
+            break;
+    }
 
-    let num = Math.round(ranNum * (range-1))
+
+    let num = Math.round(ranNum * (range-1));
+    if(num < 0) return 0;
     return num;
 };
 
@@ -271,5 +275,4 @@ const mapGen = function(){
     let mappy = new mapObj(104);
     terraform(mappy);
     renderBoard(mappy.mapData);
-    console.log(mappy);
 };
