@@ -150,9 +150,10 @@ function saveMap(req, res) {
   // let newMap = new GenerateMap(req.body);
   // let mapArray = Object.values(newMap);
   let mapname = req.body.mapname;
-  let mapdata = req.body.mapdata;
+  let mapdata = req.body.mapdata.replace(/\[/g, '{').replace(/\]/g, '}');
+  console.log(mapdata)
   let uid = req.body.uid;
-  console.dir(req.body);
+  // console.dir(req.body);
   let SQL = `INSERT INTO maps (mapname, mapdata, user_id) VALUES($1, $2, $3)`;
   return client.query(SQL, [mapname, mapdata, uid])
   .then(() =>  res.redirect(`/landing/${uid}`))

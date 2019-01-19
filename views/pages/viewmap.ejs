@@ -205,10 +205,12 @@
         return false;
     };
     
-
-    const serverMap = <%= maps.mapdata || [[]] %>;
-
-    const renderBoard = function (map) {
+    
+    const renderBoard = function () {
+      // console.log(maps.mapdata);
+      debugger;
+      const map = <%- JSON.stringify(maps.mapdata)  %>;
+      console.log(map);
         let boardHolder = document.getElementById('board');
         console.log('Map', map);
     
@@ -229,14 +231,14 @@
         }
     };
 
-    renderBoard(serverMap);
+    renderBoard();
     
     const mapGen = function(){
         mappy = new mapObj(260);
         let mapCase = document.getElementById('array-json-container');
         terraform(mappy);
         renderBoard(mappy.mapData);
-        mapCase.setAttribute('value', JSON.stringify(mappy.mapData));
+        mapCase.setAttribute('value', mappy.mapData);
     };
     </script>
 <script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script>

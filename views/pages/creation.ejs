@@ -248,9 +248,11 @@
     const mapGen = function(){
         mappy = new mapObj(260);
         let mapCase = document.getElementById('array-json-container');
-        mapCase.setAttribute('value', mappy.mapData);
         terraform(mappy);
         renderBoard(mappy.mapData);
+        console.log(mappy.mapData);
+        mapCase.setAttribute('value', JSON.stringify(mappy.mapData));
+        console.log(mapCase);
     };
     </script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script> -->
