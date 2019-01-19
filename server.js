@@ -165,9 +165,11 @@ function saveMap(req, res) {
 
 function landing (req, res) {
   let SQL = 'SELECT * FROM maps WHERE user_id=$1';
-  console.log(req.params.id);
+  console.log('string', req.params.id);
   return client.query(SQL, [req.params.id])
-    .then(result => res.render('/landing', {maps:result.rows}))
+    .then(result => 
+      { console.log( result);
+        res.render(`pages/landing`, {maps:result.rows})})
     .catch (err => {
       console.log('landing error');
       return handleError(err, res);      
