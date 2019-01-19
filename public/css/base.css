@@ -4,25 +4,30 @@ body{
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 /* ==FONTS== */
 h1 {
   font-size: 3.75em;
   letter-spacing: 3px;
+  font-family: 'IM Fell English SC', serif;
 }
 
 h2 {
   font-size: 2.5em;
+  font-family: 'IM Fell English SC', serif;
 }
 
 h3 {
   font-size: 2em;
   letter-spacing: 2px;
+  font-family: 'IM Fell English SC', serif;
 }
 
 h4 {
-  font-size: 1.7em;
+  font-size: 1.5em;
+  font-family: 'IM Fell English SC', serif;
 }
 
 figcaption h4{
@@ -38,7 +43,7 @@ figcaption p {
 
 /* ==HEADER & NAVIGATION== */
 header {
-  height: 15vh;
+  height: 10vh;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -64,7 +69,7 @@ header button {
 
 /* ==MAIN SECTION & COMPONENTS== */
 main {
-  height: 80vh;
+  height: 85vh;
   padding-left: 2vw;
   display: flex;
 }
@@ -181,18 +186,6 @@ main {
   justify-content: center;
 }
 
-th {
-  background-color: blanchedalmond;
-}
-
-th, td {
-  box-sizing: border-box;
-  border: 1px black solid;
-  width: 20px;
-  height: 20px;
-  padding: 1px;
-}
-
 #world-options-section {
   box-sizing: border-box;
   width: 15%;
@@ -218,10 +211,11 @@ th, td {
 }
 
 #generate-map-button-container {
-  margin-top: 20%;
+  margin-top: 0%;
   display: flex;
+  flex-flow: row;
   justify-content: center;
-  margin-bottom: 20%;
+  margin-bottom: 0%;
 }
 
 /* View Map page */
@@ -231,7 +225,7 @@ th, td {
 
 #save-state-form {
   width: 100%;
-  height: 10%;
+  height: 7%;
   text-align: center;
 }
 
@@ -247,10 +241,75 @@ th, td {
 }
 
 #save-state-button {
-  height: 35px;
-  width : 15%;
-  font-size: 20px;
+  height: 25px;
+  width : 13%;
+  font-size: 18px;
 } 
+
+#mapground{
+  background-image: url(../images/mapground.png);
+  background-repeat: no-repeat;
+  height: 600px;
+  width: 800px;
+  padding: 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#board{
+  width: 520px;
+  height: 520px;
+  /* float: left; */
+  display: inline-block;
+  margin-right: 15px;
+  border: none;
+  border-spacing: 0px;
+}
+
+td{
+  height: 1.95px;
+  width: 2px;
+  border: none;
+  padding: .35px;
+}
+
+#legend{
+  color: black;
+  width: 90px;
+  height: 80px;
+  border: solid black 2px;
+  display: inline-block;
+  padding: 10px;
+  font-family: 'IM Fell English SC', serif;
+  align-self: flex-start;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.blank{
+  background-color: rgba(255, 255, 255, .5);
+}
+
+.water{
+  background-color: rgba(0, 26, 42, .75);
+  color: wheat;
+}
+
+.mountain{
+  background-color: rgba(94, 69, 0, .75);
+  color: wheat;
+}
+
+.forest{
+  background-color: rgba(0, 68, 70, .75);
+  color: wheat;
+}
+
+.plains{
+  background-color: rgba(133, 110, 0, .75);
+  color: wheat;
+}
 
 #chat-widget {
   width: 24%;
@@ -260,7 +319,9 @@ th, td {
 /* ==FOOTER== */
 footer {
   height: 5vh;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  bottom: 0;
 }
