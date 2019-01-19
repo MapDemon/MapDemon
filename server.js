@@ -167,8 +167,8 @@ function landing (req, res) {
   let SQL = 'SELECT * FROM maps WHERE user_id=$1';
   console.log('string', req.params.id);
   return client.query(SQL, [req.params.id])
-    .then(result => 
-      { console.log( result);
+    .then(result => { 
+        // console.log( result);
         res.render(`pages/landing`, {maps:result.rows})})
     .catch (err => {
       console.log('landing error');
@@ -181,8 +181,8 @@ function viewMap(req, res) {
   console.log(req.params.id);
   return client.query(SQL, [req.params.id])
   .then(result => {
-    console.log(result.rows);
-      res.render(`/viewmap/${req.params.id}`, {maps:result.rows})
+    // console.log(result.rows);
+    res.render(`pages/viewmap`, {maps:result.rows[0]})
   })
   .catch (err => {
     console.log('Error, could not view map');
