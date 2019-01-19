@@ -4,33 +4,26 @@
 <body>
   <%- include('../partials/header') %>
   <main>
+    <!-- <%- include('../partials/show') %> -->
     <div id="map-section-view">
-      <div id="save-state-form">
-        <form action="x" method="x">
-          <h5>Map Name Pulled from DB, show using EJS</h5>
-          <input id="save-state-button" type="submit" value="Save Map">
-        </form>
-      </div>
-      <!-- <div class="table">
-        <div class="coordinates">
-          <div class="map-grid"></div>
-        </div> -->
-        <div id="mapground">
-          <table id="board"></table>
-          <ul id="legend">
-            <li>&#x21bf;N&#x21be;</li>
-            <li class="water">water</li>
-            <li class="mountain">mountain</li>
-            <li class="forest">forest</li>
-            <li class="plains">plains</li>
-          </ul>
+        <div id="save-state-form">
+          <form action="<%= maps.id %>" method="POST">
+            <h3><%= maps.mapname %></h3>
+            <input type="hidden" name="_method" value="DELETE">
+            <input id="delete-button" type="submit" value="Delete Map">
+          </form>
+        </div>
+        <div class="table">
+          <div class="coordinates">
+            <div class="map-grid"></div>
+          </div>
         </div>
       </div>
-    <div id="chat-widget">
-     <%- include('../partials/chatbox') %>
-    </div>
-  </main>
-  <%- include('../partials/footer') %>
-</body>
+  <div id="chat-widget">
+      <%- include('../partials/chatbox') %>
+     </div>
+   </main>
+   <%- include('../partials/footer') %>
+ </body>
 <script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script>
 </html>
