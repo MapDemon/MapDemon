@@ -10,6 +10,7 @@ const app = express();
 const pg = require('pg');
 const { catchAsync } = require('./utils');
 const request = require('request');
+const methodOverride = require('method-override');
 // const bmp = require('bmp-js')
 // const writer = new (require('buffer-writer')());
 require('dotenv').config();
@@ -27,6 +28,14 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('./public'));
 app.use(express.static('./js/'));
+app.use(methodOverride((req, res) => {
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    console.log(req.body['_method']);
+    let method = req.body['_method'];
+    delete req.body['_method'];
+    return method;
+  }
+}))
 
 
 // Database Setup
@@ -37,15 +46,38 @@ client.on('error', err => console.error(err));
 
 // Routes
 app.get('/', home);
-app.get('/creation', createMap);
-app.get('/viewmap', viewMap);
+app.post('/login', login);
+app.get('/creation/:id', createMap);
+app.post('/selectmap/:id', saveMap);
+app.get('/landing/:id', landing);
+
+
+app.get('/viewmap/:id', viewMap);
 app.get('/about', aboutPage);
 
-app.post('/viewmap/:id', saveMap);
-app.put('/viewmap', updateMap);
 app.delete('/savedMap/:id', deleteMap);
 
-
+// =================================Routing Functions
+// ======= Login
+function login(req, res) {
+  let username = req.body.uname;
+  let password = req.body.pswd;
+  let inDB = false;
+  if(inDB) {
+    res.render('pages/userMaps', {maps:[]}) //This should be postgres result.rows; 
+  } else {
+    let SQL = `INSERT INTO users (username, password)
+              VALUES ($1, $2) RETURNING *`
+    return client.query(SQL, [username, password])
+      .then( result =>  res.redirect(`/creation/${result.rows[0].id}`)
+      )
+      .catch( err => {
+        console.log('Add new user error')
+        return handleError(err, res);
+      })
+  }
+}
+// ==========Login with Discord
 // maybe move '/login' route to here if we decide to reduce down to one JS file?
 app.get('/login', (req, res) => {
   res.redirect('https://discordapp.com/oauth2/authorize?' +
@@ -73,46 +105,10 @@ app.get('/callback', catchAsync(async (req, res) => {
   console.log('71', code);
   request.post(response, function(error, response, body) {
     let uri = process.env.FRONTEND_URI || 'http://localhost:3000';
-    res.redirect(uri + '?access_token=' + code);
+    res.redirect(uri);
   })
   fetchUser(code);
 }));
-
-
-// Route Functions
-
-function home(req, res) {
-  res.render('pages/index');
-}
-
-function createMap(req, res) {
-  res.render('pages/creation');
-}
-
-function viewMap(req, res) {
-  res.render('pages/viewmap');
-}
-
-function saveMap(req, res) {
-}
-
-function updateMap(req, res) {
-  res.render('pages/viewmap');
-  // add code to update map here
-}
-
-function deleteMap (req, res) {
-}
-
-function saveUser (req, res) {
-
-}
-
-function aboutPage(req, res) {
-  res.render('pages/about');
-}
-
-
 
 function fetchUser(code) {
   console.log("114", code)
@@ -139,26 +135,98 @@ function fetchUser(code) {
 }
 
 
+// Page Route Functions
+
+function home(req, res) {
+  res.render('pages/index');
+}
+
+function createMap(req, res) {
+  res.render(`pages/creation`, {user_id:req.params.id});
+}
+
+function saveMap(req, res) {
+  console.log('everything');
+  // let newMap = new GenerateMap(req.body);
+  // let mapArray = Object.values(newMap);
+  let mapname = req.body.mapname;
+  let mapdata = req.body.uid * 100;
+  let uid = req.body.uid;
+  console.log(uid);
+  let SQL = `INSERT INTO maps (mapname, mapdata, user_id) VALUES($1, $2, $3)`;
+  return client.query(SQL, [mapname, mapdata, uid])
+  .then(() =>  res.redirect(`/landing/${uid}`))
+  .catch( err => {
+    console.log('save map error');
+    return handleError(err, res);
+  })
+}
+
+
+function landing (req, res) {
+  let SQL = 'SELECT * FROM maps WHERE user_id=$1';
+  console.log(req.params.id);
+  return client.query(SQL, [req.params.id])
+    .then(result => res.render('/landing', {maps:result.rows}))
+    .catch (err => {
+      console.log('landing error');
+      return handleError(err, res);      
+    })
+}
+
+function viewMap(req, res) {
+  let SQL = 'SELECT * FROM maps WHERE id=$1';
+  console.log(req.params.id);
+  return client.query(SQL, [req.params.id])
+  .then(result => {
+    console.log(result.rows);
+      res.render(`/viewmap/${req.params.id}`, {maps:result.rows})
+  })
+  .catch (err => {
+    console.log('Error, could not view map');
+    return handleError(err, res);
+  }) 
+}
+
+function deleteMap (req, res) {
+  client.query(`DELETE FROM maps WHERE id=$1 , [req.params.id]`)
+    .then(result => {
+      res.redirect('/landing/:id');
+    })
+    .catch (err => {
+      console.log('Error, could not delete.');
+      return handleError(err, res);
+    })      
+}
+
+
+function aboutPage(req, res) {
+  res.render('pages/about');
+}
+
+
+
+
+
+
 
 
 
 
 // Constructors
-function Map(map) {
+function GenerateMap(maps) {
   // parameters go here - one likely that ties userID to this map
-  this.mapName;
-  this.adventure;
-  this.mapId;
-  this.mapData;
-  this.userId; //fkey
+  this.mapname = maps.mapname;
+  this.mapdata = maps.mapdata;
+  this.user_id; //fkey
+
 }
 
-function User(user) {
-  this.userName;
-  this.userId;
-  this.isDM; //boolean
-  // saveUser(this, res);
-};
+// function User(user) {
+//   this.userid;
+//   this.username;
+//   // saveUser(this, res);
+// };
 
 
 // Server Listener
@@ -179,3 +247,8 @@ app.use((err, req, res, next) => {
     });
   }
 });
+
+function handleError(error, res){
+  console.error(error);
+  res.render('pages/error', {error: error})
+}
