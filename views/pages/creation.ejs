@@ -10,9 +10,9 @@
           <input id="map-name-input" type="text" value="Map Name" name="mapname">
           <input id="save-map-button" type="submit" value="Save Map">
           <input type="hidden" value="<%= user_id %>" name="uid">
-          <input id="array-json-container" type="hidden">
+          <input id="array-json-container" type="text" name="mapdata">
+          </form>
           <button type="button" onclick="mapGen()">New Map</button>
-        </form>
       </div>
       <div id="mapground">
           <table id="board"></table>
@@ -98,19 +98,19 @@
         let seeds = spore(map.mapData, [seed,seed,seed,seed]);
         if(!cutoffs)cutoffs = [.25,.5,.75,1];
     
-        while(map.blanks){
+        for(let k = 0; k < map.mapData.length * map.mapData.length; k++){
           let type;
           do{
             type =  germinate(cutoffs);
           } while(!seeds[type].length)
     
           let sprouted = sprout(map.mapData, seeds[type], type);
-          map.blanks--;
     
           for(let i = 0; i < seeds.length; i++){
             seeds[i] = seeds[i].filter((coord) => !(coord[0] === sprouted[0] && coord[1] === sprouted[1]));
           }
         }
+        console.log({map})
     };
     
     const germinate = function(cutoffs){
@@ -214,10 +214,6 @@
         return num;
     };
     
-    const hasBlanks = function(map){
-     return map.blanks;
-    };
-    
     const dupCoord = function(arr, coord){
         for(let i = 0; i < arr.length; i++){
             if(coord[0] === arr[i][0] && coord[1] === arr[i][1]) return true;
@@ -252,9 +248,9 @@
     const mapGen = function(){
         mappy = new mapObj(260);
         let mapCase = document.getElementById('array-json-container');
-        mapCase.setAttribute('value', mappy.mapData);
         terraform(mappy);
         renderBoard(mappy.mapData);
+        mapCase.setAttribute('value', mappy.mapData);
     };
     </script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script> -->
