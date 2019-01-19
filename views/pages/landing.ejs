@@ -4,7 +4,19 @@
 <body>
   <%- include('../partials/header') %>
   <main>
-    <h1>Nice error you've found!</h1>>
+    <div id="mapList">
+      <ul class="">
+        
+        <% maps.forEach(maps => { %>
+        <li>
+          <h1>
+          <a href="/viewmap/<%= maps.id%>"><%= maps.mapname %>
+        </a>
+        </h1>
+        </li>
+        <% }) %> 
+      </ul>
+    </div>
     <div id="chat-widget">
      <%- include('../partials/chatbox') %>
     </div>

@@ -1,0 +1,14 @@
+    <div id="map-section-view">
+      <div id="save-state-form">
+        <form action="<%= maps.id %>" method="POST">
+          <h3><%= maps.mapname %></h3>
+          <input type="hidden" name="_method" value="DELETE">
+          <input id="delete-button" type="submit" value="Delete Map">
+        </form>
+      </div>
+      <div class="table">
+        <div class="coordinates">
+          <div class="map-grid"></div>
+        </div>
+      </div>
+    </div>

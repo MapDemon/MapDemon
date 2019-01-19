@@ -6,12 +6,12 @@
   <main>
     <div id="map-section-create">
       <div id="save-new-map-form">
-        <form action="x" method="x">
-          <div id="generate-map-button-container">
-          <input id="map-name-input" type="text" value="Map Name">
-            <input id="save-map-button" type="submit" value="Save Map">
-            <button type="button" onclick="mapGen()">New Map</button>
-          </div>
+
+        <form action="/selectmap/:id" method="POST">
+          <input id="map-name-input" type="text" value="Map Name" name="mapname">
+          <input id="save-map-button" type="submit" value="Save Map">
+          <input type="text" value="<%= user_id %>" name="uid">
+
         </form>
       </div>
       <div id="mapground">
