@@ -268,8 +268,8 @@ main {
 }
 
 td{
-  height: 1.95px;
-  width: 2px;
+  height: 4px;
+  width: 4px;
   border: none;
   padding: .35px;
 }
@@ -292,22 +292,22 @@ td{
 }
 
 .water{
-  background-color: rgba(0, 26, 42, .75);
+  background-color: rgba(0, 0, 255, .5);
   color: wheat;
 }
 
 .mountain{
-  background-color: rgba(94, 69, 0, .75);
+  background-color: rgba(63, 63, 63, .5);
   color: wheat;
 }
 
 .forest{
-  background-color: rgba(0, 68, 70, .75);
+  background-color: rgba(0, 127, 0, .5);
   color: wheat;
 }
 
 .plains{
-  background-color: rgba(133, 110, 0, .75);
+  background-color: rgba(127, 127, 0, .5);
   color: wheat;
 }
 
