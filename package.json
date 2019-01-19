@@ -1,0 +1,36 @@
+{
+  "name": "MapDemon",
+  "version": "1.0.0",
+  "description": "A map generator for tabletop role playing game",
+  "main": "server.js",
+  "dependencies": {
+    "bmp-js": "^0.1.0",
+    "btoa": "^1.2.1",
+    "cors": "^2.8.5",
+    "dotenv": "^6.2.0",
+    "ejs": "^2.6.1",
+    "express": "^4.16.4",
+    "method-override": "^3.0.0",
+    "node-fetch": "^2.3.0",
+    "nodemon": "^1.18.9",
+    "pg": "^7.8.0",
+    "querystring": "^0.2.0",
+    "superagent": "^4.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MapDemon/MapDemon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MapDemon/MapDemon/issues"
+  },
+  "homepage": "https://github.com/MapDemon/MapDemon#readme"
+}

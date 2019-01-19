@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head') %>
+<body>
+  <%- include('../partials/header') %>
+  <main>
+    <div id="mapList">
+      <ul class="">
+        
+        <% maps.forEach(maps => { %>
+        <li>
+          <h1>
+          <a href="/viewmap/<%= maps.id%>"><%= maps.mapname %>
+        </a>
+        </h1>
+        </li>
+        <% }) %> 
+      </ul>
+    </div>
+    <div id="chat-widget">
+     <%- include('../partials/chatbox') %>
+    </div>
+  </main>
+  <%- include('../partials/footer') %>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script>
+</html>

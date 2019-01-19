@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<%- include('../partials/head') %>
+<body>
+    <%- include('../partials/header') %>
+    <main>
+        <div class="deck">
+            <form action="/login" method="POST">
+                <label for="uname"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="uname" required>
+                <label for="pswd"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="pswd" required>
+                <br>
+                <button type="submit">Login</button>
+            </form>
+            <div class="login-section">
+            <a href="/login">Login with Discord</a>
+        </div>
+        <div class="login-section">
+            <a href="https://titanembeds.com/user/dashboard">Add Titan to Your Server</a>
+        </div>
+    </div>
+        <div id="info-section">
+            <h3>Welcome</h3>
+            <p>insert general brief 'about the site' info here</p>
+        </div>
+    </main>
+    <%- include('../partials/footer') %>
+</body>
+</html>
