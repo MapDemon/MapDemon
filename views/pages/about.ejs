@@ -12,36 +12,29 @@
             <figure>
                 <img src="x" alt="x">
                 <figcaption>
-                    <h4>name</h4>
-                    <p>traits</p>
+                    <h4>Karl, Level 33 Cleric</h4>
+                    <p>"Apparently healing magic doesn't work on code. I'll have to take that level in Code Wizard. Thanks CodeFellows!"</p>
                 </figcaption>
             </figure>
             <figure>
                 <img src="x" alt="x">
                 <figcaption>
-                    <h4>name</h4>
-                    <p>traits</p>
+                    <h4>Mae, Level 30 Mage</h4>
+                    <p>Is actually two halfling bards in a cloak pretending to ba a human</p>
                 </figcaption>
             </figure>
             <figure>
                 <img src="x" alt="x">
                 <figcaption>
-                    <h4>name</h4>
-                    <p>traits</p>
+                    <h4>Anthony, Level 29 Artificer</h4>
+                    <p>"Why are machines so complicated. Why can't they be easier?"</p>
                 </figcaption>
             </figure>
             <figure>
                 <img src="x" alt="x">
                 <figcaption>
-                    <h4>name</h4>
-                    <p>traits</p>
-                </figcaption>
-            </figure>
-            <figure>
-                <img src="x" alt="x">
-                <figcaption>
-                    <h4>THEMapDemon</h4>
-                    <p>traits</p>
+                    <h4>Evy, Level 28 Druid</h4>
+                    <p>In a squirrel suit, with a falcon animal companion.</p>
                 </figcaption>
             </figure>
         </div>
@@ -54,25 +47,21 @@ const atlas = [];
 const mappy;
 let current = -1;
 const terrainTypes = [];
-
 const mapObj = function(size){
     this.mapData = newMap(size);
     this.blanks = size * size;
     this.children = [];
     this.index = atlas.length;
 };
-
 const terrain = function(name, bias){
     this.name = name;
     this.bias = bias;
     terrainTypes.push(this);
 };
-
 new terrain('water', -1);
 new terrain('mountain', -1);
 new terrain('plains', 1);
 new terrain('forest', 1);
-
 const newMap = function(x,y){
     let width = x;
     let height;
@@ -86,27 +75,22 @@ const newMap = function(x,y){
     }
     return arr;
 };
-
 const terraform = function(map, cutoffs){
     let seed = 1
     let seeds = spore(map.mapData, [seed,seed,seed,seed]);
     if(!cutoffs)cutoffs = [.25,.5,.75,1];
-
     while(map.blanks){
       let type;
       do{
         type =  germinate(cutoffs);
       } while(!seeds[type].length)
-
       let sprouted = sprout(map.mapData, seeds[type], type);
       map.blanks--;
-
       for(let i = 0; i < seeds.length; i++){
         seeds[i] = seeds[i].filter((coord) => !(coord[0] === sprouted[0] && coord[1] === sprouted[1]));
       }
     }
 };
-
 const germinate = function(cutoffs){
     let randomNum = Math.random();
     let i = 0;
@@ -115,7 +99,6 @@ const germinate = function(cutoffs){
     }
     return i;
 };
-
 const spore = function(map, arr, seeds){
     if (!seeds) seeds = [];
     for(let i = 0; i < arr.length; i++){
@@ -134,9 +117,7 @@ const spore = function(map, arr, seeds){
         }
     }
     return seeds;
-
 };
-
 const plant = function(map, curve){
     if(!curve)curve=0;
     let x;
@@ -147,7 +128,6 @@ const plant = function(map, curve){
     }while(map[x][y]+1)
     return [x,y];
 }
-
 const sprout = function(map, pool, type){
     if(Math.random() < .01){
         pool.push(plant(map, terrainTypes[type].bias*2));
@@ -167,7 +147,6 @@ const sprout = function(map, pool, type){
     }
     return bud;
 };
-
 const validPool = function(map, pool, x, y){
     if(x < 0) return false;
     if(y < 0) return false;
@@ -177,7 +156,6 @@ const validPool = function(map, pool, x, y){
     if(map[x][y]+1) return false;
     return true;
 }
-
 const biasedRandom = function(range, bias){
     let ranNum = Math.random();
     switch(bias){
@@ -202,34 +180,28 @@ const biasedRandom = function(range, bias){
             }}
             break;
     }
-
     let num = Math.round(ranNum * (range-1));
     if(num < 0) return 0;
     return num;
 };
-
 const hasBlanks = function(map){
  return map.blanks;
 };
-
 const dupCoord = function(arr, coord){
     for(let i = 0; i < arr.length; i++){
         if(coord[0] === arr[i][0] && coord[1] === arr[i][1]) return true;
     }
     return false;
 };
-
 const renderBoard = function (map) {
     let boardHolder = document.getElementById('board');
   
     while(boardHolder.firstChild){
       boardHolder.removeChild(boardHolder.firstChild);
     }
-
     for (let row = 0; row < map.length; row++) {
       let trEl = document.createElement('tr');
       boardHolder.appendChild(trEl);
-
       for (let col = 0; col < map[row].length; col++) {
         let tdEl = document.createElement('td');
         if(map[row][col]===-1){
@@ -242,7 +214,6 @@ const renderBoard = function (map) {
       }
     }
 };
-
 const mapGen = function(){
     mappy = new mapObj(260);
     let mapCase = document.getElementById('array-json-container');
