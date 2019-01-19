@@ -1,6 +1,8 @@
 'use strict';
 // holds all our maps.
 const atlas = [];
+let mappy;
+let current = -1;
 
 // this array is to keep track of the types of terrain represented. In the mapData 2d array, terrain type will be referenced by array index in this array. unfilled map coordinates will be represented with -1.
 const terrainTypes = [];
@@ -11,14 +13,12 @@ const mapObj = function(size){
     this.blanks = size * size;
     this.children = [];
     this.index = atlas.length;
-    atlas.push(this);
 };
 
 //constructor function for terrain types
-const terrain = function(name, bias, curve){
+const terrain = function(name, bias){
     this.name = name;
     this.bias = bias;
-    this.curve = curve;
     terrainTypes.push(this);
 };
 
@@ -85,7 +85,7 @@ const spore = function(map, arr, seeds){
         seeds.push([]);
         let j = 0;
         while(j < arr[i]){
-            let seed = plant(map);
+            let seed = plant(map, terrainTypes[i].bias * 2);
 
             //check if we already have this coordinate occupied by another seed
             let badSeed = false;
@@ -122,7 +122,7 @@ const sprout = function(map, pool, type){
 
     //some chance of planting a new seed at a random point
     if(Math.random() < .01){
-        pool.push(plant(map, terrainTypes[type].curve));
+        pool.push(plant(map, terrainTypes[type].bias*2));
     }
 
 
@@ -165,32 +165,40 @@ const validPool = function(map, pool, x, y){
     return true;
 }
 
-// returns a whole number from 0 to specified range. if bias = -1, bias towards larger numbers; if bias = 1, bias to smaller numbers.
+// returns a whole number from 0 to specified range. if bias = -1, bias towards larger numbers; if bias = 1, bias to smaller numbers; if bias = -2, bias to edges; if bias = 2, bias to center.
     // in terms of area growth, this means that bias = 1 will be more likely to return recently pushed coordinates, which means the area will grow in a linear fashion, as in rivers or mountain ranges; bias -1 will prefer earlier coordinates, growing the area in a more blobular fashion, such as lakes.
 const biasedRandom = function(range, bias){
     let ranNum = Math.random();
-    if(bias){
-        if(bias === 1) ranNum = Math.pow(ranNum, 3);
-        else if(bias === -1) ranNum = 1 - Math.pow(ranNum, 2);
-    }
-    // switch(bias){
-    //     case -2:
-    //         if(ranNum < 0.5) ranNum = Math.pow(2 * ranNum, 2);
-    //         else ranNum = Math.pow(2 * (1-ranNum), 2);
-    //         break;
-    //     case -1:
-    //         ranNum = 1 - Math.pow(ranNum, 2);
-    //         break;
-    //     case 1:
-    //         ranNum = Math.pow(ranNum, 3);
-    //         break;
-    //     case 2:
-    //         if(ranNum < 0.5) ranNum = 1 - Math.pow(2 * ranNum, 2);
-    //         else ranNum = 1 - Math.pow(2 * (1-ranNum), 2);
-    //         break;
+    // if(bias){
+    //     if(bias === 1) ranNum = Math.pow(ranNum, 3);
+    //     else if(bias === -1) ranNum = 1 - Math.pow(ranNum, 2);
     // }
+    switch(bias){
+        case 2:
+            if(Math.random()>.75){
+                ranNum = (Math.pow((2 * ranNum) - 1, 3)+1)/2;
+            }
+            break;
+        case -1:
+            ranNum = 1 - Math.pow(ranNum, 2);
+            break;
+        case 1:
+            ranNum = Math.pow(ranNum, 3);
+            break;
+        case -2:
+            if(Math.random()>.75){
+            if(ranNum > .5){
+                ranNum = (Math.pow((2 * ranNum) - 1, 1/3)+1)/2;
+            }
+            else{
+                ranNum = 1 - (Math.pow((2 * (1-ranNum)), 1/3)+1)/2;
+            }}
+            break;
+    }
 
-    let num = Math.round(ranNum * (range-1))
+
+    let num = Math.round(ranNum * (range-1));
+    if(num < 0) return 0;
     return num;
 };
 
@@ -260,16 +268,36 @@ const renderBoard = function (map) {
 // }
 
 //deletes a map from the atlas and decrements the index of all maps following it so that it is still correct.
-const deleteMap = function(index){
-    atlas = atlas.filter(map => map.index !== index);
-    for(let i = index; i < atlas.length; i++){
-        atlas[i].index--;
+const deletefromAtlas = function(){
+    if(confirm('Are you sure you want to delete this map?')){
+        atlas = atlas.filter(map => map.index !== current);
+        renderBoard(atlas[current]);
     }
+    // for(let i = index; i < atlas.length; i++){
+        // atlas[i].index--;
+    // };
+};
+
+const saveToAtlas = function(){
+    if(!mappy){
+        alert('There is nothing to save');
+    } else{
+        mappy.name = prompt('Give this map a name.');
+        atlas.push(mappy);
+    };
+};
+
+const loadFromAtlas = function(){
+    current++;
+    if(current>= atlas.length){
+        current = 0;
+    };
+    renderBoard(atlas[current]);
 }
 
 const mapGen = function(){
-    let mappy = new mapObj(104);
+    mappy = new mapObj(260);
+    console.log('we are here');
     terraform(mappy);
     renderBoard(mappy.mapData);
-    console.log(mappy);
 };

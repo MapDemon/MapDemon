@@ -7,16 +7,25 @@
     <div id="map-section-view">
       <div id="save-state-form">
         <form action="x" method="x">
-          <h3>Map Name Pulled from DB, show using EJS</h3>
+          <h5>Map Name Pulled from DB, show using EJS</h5>
           <input id="save-state-button" type="submit" value="Save Map">
         </form>
       </div>
-      <div class="table">
+      <!-- <div class="table">
         <div class="coordinates">
           <div class="map-grid"></div>
+        </div> -->
+        <div id="mapground">
+          <table id="board"></table>
+          <ul id="legend">
+            <li>&#x21bf;N&#x21be;</li>
+            <li class="water">water</li>
+            <li class="mountain">mountain</li>
+            <li class="forest">forest</li>
+            <li class="plains">plains</li>
+          </ul>
         </div>
       </div>
-    </div>
     <div id="chat-widget">
      <%- include('../partials/chatbox') %>
     </div>
