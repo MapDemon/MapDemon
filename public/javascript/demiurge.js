@@ -1,7 +1,7 @@
 'use strict';
 // holds all our maps.
 const atlas = [];
-const mappy;
+let mappy;
 let current = -1;
 
 // this array is to keep track of the types of terrain represented. In the mapData 2d array, terrain type will be referenced by array index in this array. unfilled map coordinates will be represented with -1.
