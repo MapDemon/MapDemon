@@ -6,31 +6,38 @@
   <main>
     <div id="map-section-create">
       <div id="save-new-map-form">
+
         <form action="/selectmap/:id" method="POST">
           <input id="map-name-input" type="text" value="Map Name" name="mapname">
           <input id="save-map-button" type="submit" value="Save Map">
           <input type="text" value="<%= user_id %>" name="uid">
+
         </form>
       </div>
-      <div id="map-table">
-      <%- include('../partials/maplayout') %>
+      <div id="mapground">
+          <table id="board"></table>
+          <ul id="legend">
+            <li>&#x21bf;N&#x21be;</li>
+            <li class="water">water</li>
+            <li class="mountain">mountain</li>
+            <li class="forest">forest</li>
+            <li class="plains">plains</li>
+          </ul>
+        </div>
       </div>
     </div>
     <div id="world-options-section">
       <form action="x">
-        <fieldset id="biome-selection">
-          <h4>Select Biomes</h4>
+        <!-- <fieldset id="biome-selection"> -->
+          <!-- <h4>Select Biomes</h4>
           <p>
           <input id="water" type="checkbox" name="water" value="water"> Water<br />
           <input id="plains" type="checkbox" name="plains" value="plains"> Plains<br />
           <input id="mountains" type="checkbox" name="mountains" value="mountains"> Mountains<br />
           <input id="forest" type="checkbox" name="forest" value="forest"> Forest<br />
-          <p>
-          <div id="generate-map-button-container">
-            <input id="generate-map-button" type="submit" name="generate-map" value="Generate Map">
-          </div>
-        </fieldset>
-        <fieldset id="icons-selection">
+          <p> -->
+          <!-- </fieldset> -->
+        <!-- <fieldset id="icons-selection">
           <h4>Select Tokens</h4>
           <p>
           <input id="Landmark" type="checkbox" name="Landmark" value="Landmark"> Landmark<br />
@@ -38,7 +45,7 @@
           <input id="Encounter" type="checkbox" name="Encounter" value="Encounter"> Encounter<br />
           <input id="Charactor" type="checkbox" name="Charactor" value="Character"> Character<br />
           <p>
-        </fieldset>
+        </fieldset> -->
       </form>
     </div>
     <div id="chat-widget">
@@ -47,5 +54,6 @@
   </main>
   <%- include('../partials/footer') %>
 </body>
+<script src="demiurge.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script>
 </html>
