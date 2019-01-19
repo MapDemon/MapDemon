@@ -49,4 +49,206 @@
     </main>
     <%- include('../partials/footer') %>
 </body>
+<script>
+const atlas = [];
+const mappy;
+let current = -1;
+const terrainTypes = [];
+
+const mapObj = function(size){
+    this.mapData = newMap(size);
+    this.blanks = size * size;
+    this.children = [];
+    this.index = atlas.length;
+};
+
+const terrain = function(name, bias){
+    this.name = name;
+    this.bias = bias;
+    terrainTypes.push(this);
+};
+
+new terrain('water', -1);
+new terrain('mountain', -1);
+new terrain('plains', 1);
+new terrain('forest', 1);
+
+const newMap = function(x,y){
+    let width = x;
+    let height;
+    y ? height = y : height = x;
+    let arr = [];
+    for(let i = 0; i < width; i++){
+        arr.push([]);
+        for(let j = 0; j < height; j++){
+            arr[i].push(-1);
+        }
+    }
+    return arr;
+};
+
+const terraform = function(map, cutoffs){
+    let seed = 1
+    let seeds = spore(map.mapData, [seed,seed,seed,seed]);
+    if(!cutoffs)cutoffs = [.25,.5,.75,1];
+
+    while(map.blanks){
+      let type;
+      do{
+        type =  germinate(cutoffs);
+      } while(!seeds[type].length)
+
+      let sprouted = sprout(map.mapData, seeds[type], type);
+      map.blanks--;
+
+      for(let i = 0; i < seeds.length; i++){
+        seeds[i] = seeds[i].filter((coord) => !(coord[0] === sprouted[0] && coord[1] === sprouted[1]));
+      }
+    }
+};
+
+const germinate = function(cutoffs){
+    let randomNum = Math.random();
+    let i = 0;
+    while(randomNum >= cutoffs[i]){
+      i++;
+    }
+    return i;
+};
+
+const spore = function(map, arr, seeds){
+    if (!seeds) seeds = [];
+    for(let i = 0; i < arr.length; i++){
+        seeds.push([]);
+        let j = 0;
+        while(j < arr[i]){
+            let seed = plant(map, terrainTypes[i].bias * 2);
+            let badSeed = false;
+            for(let k = 0; k < seeds.length; k++){
+                if(dupCoord(seeds[k], seed))badSeed = true;
+            }
+            if(!badSeed){
+                seeds[i].push(seed);
+                j++;
+            }
+        }
+    }
+    return seeds;
+
+};
+
+const plant = function(map, curve){
+    if(!curve)curve=0;
+    let x;
+    let y;
+    do{
+        x = biasedRandom(map.length, curve);
+        y = biasedRandom(map.length, curve);
+    }while(map[x][y]+1)
+    return [x,y];
+}
+
+const sprout = function(map, pool, type){
+    if(Math.random() < .01){
+        pool.push(plant(map, terrainTypes[type].bias*2));
+    }
+    let bud = pool[biasedRandom(pool.length, terrainTypes[type].bias)];
+    map[bud[0]][bud[1]] = type;
+    for(let i = bud[0]-1; i <= bud[0]+1; i++){
+        if(i > -1 && i < map.length){
+            for(let j = bud[1]-1; j <= bud[1]+1; j++){
+                if(j > -1 && j < map[i].length){
+                    if(map[i][j] ===  -1  && !dupCoord(pool, [i,j])){
+                        pool.push([i,j]);
+                    }
+                }
+            }
+        }
+    }
+    return bud;
+};
+
+const validPool = function(map, pool, x, y){
+    if(x < 0) return false;
+    if(y < 0) return false;
+    if(x >= map.length) return false;
+    if(y >= map.length) return false;
+    if(dupCoord(pool,x,y))return false;
+    if(map[x][y]+1) return false;
+    return true;
+}
+
+const biasedRandom = function(range, bias){
+    let ranNum = Math.random();
+    switch(bias){
+        case 2:
+            if(Math.random()>.75){
+                ranNum = (Math.pow((2 * ranNum) - 1, 3)+1)/2;
+            }
+            break;
+        case -1:
+            ranNum = 1 - Math.pow(ranNum, 2);
+            break;
+        case 1:
+            ranNum = Math.pow(ranNum, 3);
+            break;
+        case -2:
+            if(Math.random()>.75){
+            if(ranNum > .5){
+                ranNum = (Math.pow((2 * ranNum) - 1, 1/3)+1)/2;
+            }
+            else{
+                ranNum = 1 - (Math.pow((2 * (1-ranNum)), 1/3)+1)/2;
+            }}
+            break;
+    }
+
+    let num = Math.round(ranNum * (range-1));
+    if(num < 0) return 0;
+    return num;
+};
+
+const hasBlanks = function(map){
+ return map.blanks;
+};
+
+const dupCoord = function(arr, coord){
+    for(let i = 0; i < arr.length; i++){
+        if(coord[0] === arr[i][0] && coord[1] === arr[i][1]) return true;
+    }
+    return false;
+};
+
+const renderBoard = function (map) {
+    let boardHolder = document.getElementById('board');
+  
+    while(boardHolder.firstChild){
+      boardHolder.removeChild(boardHolder.firstChild);
+    }
+
+    for (let row = 0; row < map.length; row++) {
+      let trEl = document.createElement('tr');
+      boardHolder.appendChild(trEl);
+
+      for (let col = 0; col < map[row].length; col++) {
+        let tdEl = document.createElement('td');
+        if(map[row][col]===-1){
+            tdEl.className = 'blank'
+        }else {
+            tdEl.className = terrainTypes[map[row][col]].name;
+        }
+        trEl.appendChild(tdEl);
+  
+      }
+    }
+};
+
+const mapGen = function(){
+    mappy = new mapObj(260);
+    let mapCase = document.getElementById('array-json-container');
+    mapCase.setAttribute('value', mappy.mapData);
+    terraform(mappy);
+    renderBoard(mappy.mapData);
+};
+</script>
 </html>
