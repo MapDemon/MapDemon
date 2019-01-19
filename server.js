@@ -10,6 +10,7 @@ const app = express();
 const pg = require('pg');
 const { catchAsync } = require('./utils');
 const request = require('request');
+const methodOverride = require('method-override');
 // const bmp = require('bmp-js')
 // const writer = new (require('buffer-writer')());
 require('dotenv').config();
@@ -27,6 +28,14 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded({extended: true}));
 app.use(express.static('./public'));
 app.use(express.static('./js/'));
+app.use(methodOverride((req, res) => {
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    console.log(req.body['_method']);
+    let method = req.body['_method'];
+    delete req.body['_method'];
+    return method;
+  }
+}))
 
 
 // Database Setup
@@ -40,13 +49,12 @@ app.get('/', home);
 app.post('/login', login);
 app.get('/creation/:id', createMap);
 app.post('/selectmap/:id', saveMap);
+app.get('/landing/:id', landing);
 
 
-
-app.get('/viewmap', viewMap);
+app.get('/viewmap/:id', viewMap);
 app.get('/about', aboutPage);
 
-app.put('/viewmap', updateMap);
 app.delete('/savedMap/:id', deleteMap);
 
 // =================================Routing Functions
@@ -155,29 +163,33 @@ function saveMap(req, res) {
 }
 
 
-
-
-function viewMap(req, res) {
-  res.render('pages/viewmap');
+function landing (req, res) {
+  let SQL = 'SELECT * FROM maps WHERE user_id=$1';
+  console.log(req.params.id);
+  return client.query(SQL, [req.params.id])
+    .then(result => res.render('pages/landing', {maps:result.rows}))
+    .catch (err => {
+      console.log('landing error');
+      return handleError(err, res);      
+    })
 }
 
-
-function updateMap(req, res) {
-  res.render('pages/viewmap');
-  // add code to update map here
+function viewMap(req, res) {
+  let SQL = 'SELECT * FROM maps WHERE id=$1';
+  console.log(req.params.id);
+  return client.query(SQL, [req.params.id])
+    .then(result => res.render('pages/viewmaps/:id', {maps:result.rows}))
 }
 
 function deleteMap (req, res) {
-}
-
-function saveUser (req, res) {
-}
-// firsttime signin - redirect user to create page
-// in process username and password get pushed into database, and userId is produced.
-// logging in after have a will list of maps
-
-function loading(req, res) {
-
+  client.query(`DELETE FROM maps WHERE id=$1 , [req.params.id]`)
+    .then(result => {
+      res.redirect('/landing/:id');
+    })
+    .catch (err => {
+      console.log('Error, could not delete.');
+      return handleError(err, res);
+    })      
 }
 
 

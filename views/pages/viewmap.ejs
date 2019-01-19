@@ -4,24 +4,12 @@
 <body>
   <%- include('../partials/header') %>
   <main>
-    <div id="map-section-view">
-      <div id="save-state-form">
-        <form action="x" method="x">
-          <h3>Map Name Pulled from DB, show using EJS</h3>
-          <input id="save-state-button" type="submit" value="Save Map">
-        </form>
-      </div>
-      <div class="table">
-        <div class="coordinates">
-          <div class="map-grid"></div>
-        </div>
-      </div>
-    </div>
-    <div id="chat-widget">
-     <%- include('../partials/chatbox') %>
-    </div>
-  </main>
-  <%- include('../partials/footer') %>
-</body>
+    <%- include('../partials/show') %>    
+  <div id="chat-widget">
+      <%- include('../partials/chatbox') %>
+     </div>
+   </main>
+   <%- include('../partials/footer') %>
+ </body>
 <script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script>
 </html>
