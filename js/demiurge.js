@@ -1,6 +1,8 @@
 'use strict';
 // holds all our maps.
 const atlas = [];
+let mappy;
+let current = -1;
 
 // this array is to keep track of the types of terrain represented. In the mapData 2d array, terrain type will be referenced by array index in this array. unfilled map coordinates will be represented with -1.
 const terrainTypes = [];
@@ -11,7 +13,6 @@ const mapObj = function(size){
     this.blanks = size * size;
     this.children = [];
     this.index = atlas.length;
-    atlas.push(this);
 };
 
 //constructor function for terrain types
@@ -121,7 +122,7 @@ const sprout = function(map, pool, type){
 
     //some chance of planting a new seed at a random point
     if(Math.random() < .01){
-        pool.push(plant(map));
+        pool.push(plant(map, terrainTypes[type].bias*2));
     }
 
 
@@ -174,7 +175,9 @@ const biasedRandom = function(range, bias){
     // }
     switch(bias){
         case 2:
-            ranNum = (Math.pow((2 * ranNum) - 1, 3)+1)/2;
+            if(Math.random()>.75){
+                ranNum = (Math.pow((2 * ranNum) - 1, 3)+1)/2;
+            }
             break;
         case -1:
             ranNum = 1 - Math.pow(ranNum, 2);
@@ -183,12 +186,13 @@ const biasedRandom = function(range, bias){
             ranNum = Math.pow(ranNum, 3);
             break;
         case -2:
+            if(Math.random()>.75){
             if(ranNum > .5){
                 ranNum = (Math.pow((2 * ranNum) - 1, 1/3)+1)/2;
             }
             else{
                 ranNum = 1 - (Math.pow((2 * (1-ranNum)), 1/3)+1)/2;
-            }
+            }}
             break;
     }
 
@@ -264,15 +268,36 @@ const renderBoard = function (map) {
 // }
 
 //deletes a map from the atlas and decrements the index of all maps following it so that it is still correct.
-const deleteMap = function(index){
-    atlas = atlas.filter(map => map.index !== index);
-    for(let i = index; i < atlas.length; i++){
-        atlas[i].index--;
+const deletefromAtlas = function(){
+    if(confirm('Are you sure you want to delete this map?')){
+        atlas = atlas.filter(map => map.index !== current);
+        renderBoard(atlas[current]);
     }
+    // for(let i = index; i < atlas.length; i++){
+        // atlas[i].index--;
+    // };
+};
+
+const saveToAtlas = function(){
+    if(!mappy){
+        alert('There is nothing to save');
+    } else{
+        mappy.name = prompt('Give this map a name.');
+        atlas.push(mappy);
+    };
+};
+
+const loadFromAtlas = function(){
+    current++;
+    if(current>= atlas.length){
+        current = 0;
+    };
+    renderBoard(atlas[current]);
 }
 
 const mapGen = function(){
-    let mappy = new mapObj(104);
+    mappy = new mapObj(260);
+    console.log('we are here');
     terraform(mappy);
     renderBoard(mappy.mapData);
 };
