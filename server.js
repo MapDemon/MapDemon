@@ -150,9 +150,10 @@ function saveMap(req, res) {
   // let newMap = new GenerateMap(req.body);
   // let mapArray = Object.values(newMap);
   let mapname = req.body.mapname;
-  let mapdata = req.body.mapdata;
+  let mapdata = req.body.mapdata.replace(/\[/g, '{').replace(/\]/g, '}');
+  console.log(mapdata)
   let uid = req.body.uid;
-  console.log(rqe.body);
+  // console.dir(req.body);
   let SQL = `INSERT INTO maps (mapname, mapdata, user_id) VALUES($1, $2, $3)`;
   return client.query(SQL, [mapname, mapdata, uid])
   .then(() =>  res.redirect(`/landing/${uid}`))
@@ -170,7 +171,7 @@ function landing (req, res) {
     .then(result => { 
         // console.log( result);
         res.render(`pages/landing`, {maps:result.rows})})
-            .catch (err => {
+    .catch (err => {
       console.log('landing error');
       return handleError(err, res);      
     })
@@ -181,8 +182,8 @@ function viewMap(req, res) {
   console.log(req.params.id);
   return client.query(SQL, [req.params.id])
   .then(result => {
-    console.log(result.rows);
-      res.render(`/viewmap/${req.params.id}`, {maps:result.rows})
+    // console.log(result.rows);
+    res.render(`pages/viewmap`, {maps:result.rows[0]})
   })
   .catch (err => {
     console.log('Error, could not view map');
