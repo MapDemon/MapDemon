@@ -167,7 +167,7 @@ function landing (req, res) {
   let SQL = 'SELECT * FROM maps WHERE user_id=$1';
   console.log(req.params.id);
   return client.query(SQL, [req.params.id])
-    .then(result => res.render('pages/landing', {maps:result.rows}))
+    .then(result => res.render('/landing', {maps:result.rows}))
     .catch (err => {
       console.log('landing error');
       return handleError(err, res);      
@@ -178,7 +178,14 @@ function viewMap(req, res) {
   let SQL = 'SELECT * FROM maps WHERE id=$1';
   console.log(req.params.id);
   return client.query(SQL, [req.params.id])
-    .then(result => res.render('pages/viewmaps/:id', {maps:result.rows}))
+  .then(result => {
+    console.log(result.rows);
+      res.render(`/viewmap/${req.params.id}`, {maps:result.rows})
+  })
+  .catch (err => {
+    console.log('Error, could not view map');
+    return handleError(err, res);
+  }) 
 }
 
 function deleteMap (req, res) {
