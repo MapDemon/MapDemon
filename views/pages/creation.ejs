@@ -246,13 +246,11 @@
     };
     
     const mapGen = function(){
-        mappy = new mapObj(260);
+        mappy = new mapObj(128);
         let mapCase = document.getElementById('array-json-container');
         terraform(mappy);
         renderBoard(mappy.mapData);
-        console.log(mappy.mapData);
         mapCase.setAttribute('value', JSON.stringify(mappy.mapData));
-        console.log(mapCase);
     };
     </script>
 <!-- <script src="https://cdn.jsdelivr.net/npm/@widgetbot/html-embed"></script> -->
