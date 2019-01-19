@@ -9,7 +9,7 @@ const querystring = require('querystring');
 const app = express();
 const pg = require('pg');
 const { catchAsync } = require('./utils');
-const request = require('request');
+// const request = require('request');
 const methodOverride = require('method-override');
 // const bmp = require('bmp-js')
 // const writer = new (require('buffer-writer')());
@@ -103,16 +103,16 @@ app.get('/callback', catchAsync(async (req, res) => {
     });
   const json = await response.json();
   console.log('71', code);
-  request.post(response, function(error, response, body) {
-    let uri = process.env.FRONTEND_URI || 'http://localhost:3000';
-    res.redirect(uri);
-  })
+  // request.post(response, function(error, response, body) {
+  // })
+  let uri = /* process.env.FRONTEND_URI || */ 'http://localhost:3000';
+  res.redirect(uri);
   fetchUser(code);
 }));
 
 function fetchUser(code) {
   console.log("114", code)
-  const URL = `http://discordapp.com/api/users/@me?Authorization=${code}`;
+  const URL = `https://discordapp.com/api/users/@me?Authorization=${code}`;
 
   return superagent.get(URL)
   .then(result => {
@@ -152,7 +152,7 @@ function saveMap(req, res) {
   let mapname = req.body.mapname;
   let mapdata = req.body.mapdata;
   let uid = req.body.uid;
-  console.dir(req.body);
+  console.log(rqe.body);
   let SQL = `INSERT INTO maps (mapname, mapdata, user_id) VALUES($1, $2, $3)`;
   return client.query(SQL, [mapname, mapdata, uid])
   .then(() =>  res.redirect(`/landing/${uid}`))
@@ -170,7 +170,7 @@ function landing (req, res) {
     .then(result => { 
         // console.log( result);
         res.render(`pages/landing`, {maps:result.rows})})
-    .catch (err => {
+            .catch (err => {
       console.log('landing error');
       return handleError(err, res);      
     })
@@ -181,8 +181,8 @@ function viewMap(req, res) {
   console.log(req.params.id);
   return client.query(SQL, [req.params.id])
   .then(result => {
-    // console.log(result.rows);
-    res.render(`pages/viewmap`, {maps:result.rows[0]})
+    console.log(result.rows);
+      res.render(`/viewmap/${req.params.id}`, {maps:result.rows})
   })
   .catch (err => {
     console.log('Error, could not view map');
