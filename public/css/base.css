@@ -155,7 +155,7 @@ main {
 }
 
 #map-name-input {
-  width: 80%;
+  width: 75%;
   margin: 1%;
   line-height: 26px;
   text-align: center;
@@ -163,7 +163,7 @@ main {
 
 #save-map-button {
   height: 26px;
-  width : 15%;
+  width : 13%;
 }
 
 #map-table {
