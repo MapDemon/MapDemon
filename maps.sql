@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS maps (
     id SERIAL PRIMARY KEY,
     mapname VARCHAR(255),
-    mapdata VARCHAR(1200),
+    mapdata TEXT[][],
     user_id INTEGER NOT NULL REFERENCES users(id)
 );
 
@@ -21,6 +21,6 @@ INSERT INTO users (username, password) VALUES (
 
 INSERT INTO maps (mapname, mapdata, user_id) VALUES (
     'Hobbiton',
-    '1',
+    '{{2,2}}',
     '1'
 );

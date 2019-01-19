@@ -298,7 +298,7 @@ const renderBoard = function (map) {
 const mapGen = function(){
   mappy = new mapObj(260);
   let mapCase = document.getElementById('array-json-container');
-  mapCase.setAttribute('value', mappy.mapData);
   terraform(mappy);
+  mapCase.setAttribute('value', mappy.mapData);
   renderBoard(mappy.mapData);
 };
