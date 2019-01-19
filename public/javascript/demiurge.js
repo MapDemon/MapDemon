@@ -268,36 +268,37 @@ const renderBoard = function (map) {
 // }
 
 //deletes a map from the atlas and decrements the index of all maps following it so that it is still correct.
-const deletefromAtlas = function(){
-    if(confirm('Are you sure you want to delete this map?')){
-        atlas = atlas.filter(map => map.index !== current);
-        renderBoard(atlas[current]);
-    }
-    // for(let i = index; i < atlas.length; i++){
-        // atlas[i].index--;
-    // };
-};
+// const deletefromAtlas = function(){
+//     if(confirm('Are you sure you want to delete this map?')){
+//         atlas = atlas.filter(map => map.index !== current);
+//         renderBoard(atlas[current]);
+//     }
+//     // for(let i = index; i < atlas.length; i++){
+//         // atlas[i].index--;
+//     // };
+// };
 
-const saveToAtlas = function(){
-    if(!mappy){
-        alert('There is nothing to save');
-    } else{
-        mappy.name = prompt('Give this map a name.');
-        atlas.push(mappy);
-    };
-};
+// const saveToAtlas = function(){
+//     if(!mappy){
+//         alert('There is nothing to save');
+//     } else{
+//         mappy.name = prompt('Give this map a name.');
+//         atlas.push(mappy);
+//     };
+// };
 
-const loadFromAtlas = function(){
-    current++;
-    if(current>= atlas.length){
-        current = 0;
-    };
-    renderBoard(atlas[current]);
-}
+// const loadFromAtlas = function(){
+//     current++;
+//     if(current>= atlas.length){
+//         current = 0;
+//     };
+//     renderBoard(atlas[current]);
+// }
 
 const mapGen = function(){
     mappy = new mapObj(260);
-    console.log('we are here');
+    let mapCase = document.getElementById('array-json-container');
+    mapCase.setAttribute('value', mappy.mapData);
     terraform(mappy);
     renderBoard(mappy.mapData);
 };
