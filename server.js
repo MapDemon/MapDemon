@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 // Dependencies
 const express = require('express');
@@ -35,7 +35,7 @@ app.use(methodOverride((req, res) => {
     delete req.body['_method'];
     return method;
   }
-}))
+}));
 
 
 // Database Setup
@@ -66,13 +66,12 @@ function login(req, res) {
   if(inDB) {
     res.render('pages/userMaps', {maps:[]}) //This should be postgres result.rows; 
   } else {
-    let SQL = `INSERT INTO users (username, password)
-              VALUES ($1, $2) RETURNING *`
+    let SQL = `INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *`;
     return client.query(SQL, [username, password])
       .then( result =>  res.redirect(`/creation/${result.rows[0].id}`)
       )
       .catch( err => {
-        console.log('Add new user error')
+        console.log('Add new user error');
         return handleError(err, res);
       })
   }
@@ -111,7 +110,7 @@ app.get('/callback', catchAsync(async (req, res) => {
 }));
 
 function fetchUser(code) {
-  console.log("114", code)
+  console.log("114", code);
   const URL = `https://discordapp.com/api/users/@me?Authorization=${code}`;
 
   return superagent.get(URL)
@@ -129,7 +128,7 @@ function fetchUser(code) {
       })
   })
   .catch( err => {
-    console.log('fetchUser error')
+    console.log('fetchUser error');
     return handleError(err, res);
   })
 }
@@ -151,7 +150,7 @@ function saveMap(req, res) {
   // let mapArray = Object.values(newMap);
   let mapname = req.body.mapname;
   let mapdata = req.body.mapdata.replace(/\[/g, '{').replace(/\]/g, '}');
-  console.log(mapdata)
+  console.log(mapdata);
   let uid = req.body.uid;
   // console.dir(req.body);
   let SQL = `INSERT INTO maps (mapname, mapdata, user_id) VALUES($1, $2, $3)`;

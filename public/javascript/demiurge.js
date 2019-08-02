@@ -45,26 +45,25 @@ const newMap = function(x,y){
 
 // given a mapObj, populates its mapData with terrain. "cutoffs" is an array governing the probabilities of each area "picking" a new member; default is each area gets even probability
 const terraform = function(map, cutoffs){
-  let seed = 1
+  let seed = 1;
   let seeds = spore(map.mapData, [seed,seed,seed,seed]);
   //this array will contain the candidate pool for area growth. when a coordinate point is populated, it needs to be removed from all candidate pools. For now we default to one of each terrain type. We can mess around with this later.
   if(!cutoffs)cutoffs = [.25,.5,.75,1];
   //likewise, we can mess around with this later.
 
-  while(map.blanks){
+  for(let k = 0; k < map.mapData.length * map.mapData.length; k++){
     let type;
     do{
       type = germinate(cutoffs);
-    } while(!seeds[type].length)
+    } while(!seeds[type].length);
 
     let sprouted = sprout(map.mapData, seeds[type], type);
-    map.blanks--;
 
     for(let i = 0; i < seeds.length; i++){
       seeds[i] = seeds[i].filter((coord) => !(coord[0] === sprouted[0] && coord[1] === sprouted[1]));
     }
   }
-
+  console.log({map})
 };
 
 //choses a candidate pool for growth
@@ -76,7 +75,6 @@ const germinate = function(cutoffs){
   }
   return i;
 };
-
 
 // given a mapData and an array (and optionally an array of existing seeds), places a number of terrain seeds of each type of terrain on the map, and returns a 2d array of their coordinates. for example, an imput of (map, [1, 2, 0, 2]) will return one plains seed, two mountains seeds, no forest seeds, and two water seeds. These seeds are not yet populated on the actual map data. (This is actually a 3d array, but the last dimension is only two deep because the coordinates are themselves 2d.)
 const spore = function(map, arr, seeds){
@@ -97,12 +95,9 @@ const spore = function(map, arr, seeds){
         j++;
       }
     }
-    // sprout(map, seeds[i], i);
   }
   return seeds;
-
 };
-
 
 //picks a random unpopulated coordinate pair. assumes the map still has blank points. curve is an optional variable that biases to the edges of the map if negative, the center if positive, and neither if 0.
 const plant = function(map, curve){
@@ -112,23 +107,18 @@ const plant = function(map, curve){
   do{
     x = biasedRandom(map.length, curve);
     y = biasedRandom(map.length, curve);
-  }while(map[x][y]+1)
-
+  }while(map[x][y]+1);
   return [x,y];
-}
+};
 
 // chooses a coordinate point from the candidate pool, populates it on the map, and expands the candidate pool by radius for area growth. returns the coordinates of the selected coordinate point.
 const sprout = function(map, pool, type){
-
   //some chance of planting a new seed at a random point
   if(Math.random() < .01){
     pool.push(plant(map, terrainTypes[type].bias*2));
   }
-
-
   let bud = pool[biasedRandom(pool.length, terrainTypes[type].bias)];
   map[bud[0]][bud[1]] = type;
-
   //expand pool
 
   //expands in square form
@@ -151,7 +141,6 @@ const sprout = function(map, pool, type){
   // if(validPool(map, pool, bud[0], bud[1]+1)) pool.push([bud[0],bud[1]+1]);
 
   return bud;
-
 };
 
 //checks if a coordinate can be pushed into the pool
@@ -163,16 +152,12 @@ const validPool = function(map, pool, x, y){
   if(dupCoord(pool,x,y))return false;
   if(map[x][y]+1) return false;
   return true;
-}
+};
 
 // returns a whole number from 0 to specified range. if bias = -1, bias towards larger numbers; if bias = 1, bias to smaller numbers; if bias = -2, bias to edges; if bias = 2, bias to center.
 // in terms of area growth, this means that bias = 1 will be more likely to return recently pushed coordinates, which means the area will grow in a linear fashion, as in rivers or mountain ranges; bias -1 will prefer earlier coordinates, growing the area in a more blobular fashion, such as lakes.
 const biasedRandom = function(range, bias){
   let ranNum = Math.random();
-  // if(bias){
-  //     if(bias === 1) ranNum = Math.pow(ranNum, 3);
-  //     else if(bias === -1) ranNum = 1 - Math.pow(ranNum, 2);
-  // }
   switch(bias){
   case 2:
     if(Math.random()>.75){
@@ -196,15 +181,9 @@ const biasedRandom = function(range, bias){
     break;
   }
 
-
   let num = Math.round(ranNum * (range-1));
   if(num < 0) return 0;
   return num;
-};
-
-//checks if a mapData has unpoplated points
-const hasBlanks = function(map){
-  return map.blanks;
 };
 
 //takes in an array of coordinates and checks if it contains the specified coordinate
@@ -243,7 +222,6 @@ const renderBoard = function (map) {
     }
   }
 };
-
 
 // const mappy = newMap(30);
 // var seeds = spore(mappy, [2,1,1,1])
@@ -296,9 +274,9 @@ const renderBoard = function (map) {
 // }
 
 const mapGen = function(){
-  mappy = new mapObj(260);
+  mappy = new mapObj(128);
   let mapCase = document.getElementById('array-json-container');
-  mapCase.setAttribute('value', mappy.mapData);
   terraform(mappy);
   renderBoard(mappy.mapData);
+  mapCase.setAttribute('value', JSON.stringify(mappy.mapData));
 };
